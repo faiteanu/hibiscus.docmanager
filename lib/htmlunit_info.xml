@@ -1,0 +1,6 @@
+<info>
+	<name>HtmlUnit - headless web browser</name>
+	<description>Kommandozeilen-Browser für Java-Anwendungen / GUI-Less browser for Java programs</description>
+	<url>http://htmlunit.sourceforge.net/</url>
+	<license>Apache License 2.0 - http://htmlunit.sourceforge.net/license.html</license>
+</info>

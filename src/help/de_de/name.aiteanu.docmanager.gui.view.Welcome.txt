@@ -1,0 +1,10 @@
+<form>
+	<p>
+		<span color="header" font="header">Willkommen</span>
+	</p>
+
+	<p>
+	  Über DocManager können Dokumente von verschiedenen Banken abgerufen werden.
+	  Dazu gehören beispielsweise Mitteilungen, Vertragsdokumente oder Wertpapierabrechnungen.
+	</p>
+</form>

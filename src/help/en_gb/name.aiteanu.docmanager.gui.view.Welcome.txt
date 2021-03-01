@@ -1,0 +1,10 @@
+<form>
+	<p>
+		<span color="header" font="header">Welcome</span>
+	</p>
+
+	<p>
+	  DocManager can be used to retrieve documents from different institutes, e.g. banks.
+	  Those are for instance notifications, contracts or securities settlements.
+	</p>
+</form>
