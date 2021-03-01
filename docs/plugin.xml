@@ -5,14 +5,14 @@
         xsi:schemaLocation="http://www.willuhn.de/schema/jameica-plugin http://www.willuhn.de/schema/jameica-plugin-1.0.xsd"
         name="hibiscus.docmanager" version="0.1.0" class="name.aiteanu.docmanager.DocManager">
 
-  <description>Hibiscus DocManager Plugin for Jameica</description>
-  <url>https://github-releases.githubusercontent.com/faiteanu/hibiscus.docmanager/releases/latest/download/hibiscus.docmanager.zip</url>
+  <description>DocManager Plugin for Jameica/Hibiscus</description>
+  <url>https://faiteanu.github.io/hibiscus.docmanager/hibiscus.docmanager.zip</url>
   <homepage>https://github.com/faiteanu/hibiscus.docmanager</homepage>
   <license>CC BY-NC-SA 4.0 - https://creativecommons.org/licenses/by-nc-sa/4.0/</license>
 
   <!-- Define dependencies to jameica or other plugins -->
   <requires jameica="1.10+">
-    <import plugin="hibiscus" version="1.12+" required="true" />
+    <import plugin="hibiscus" version="2.10+" required="true" />
     <import plugin="hibiscus.mashup" version="0.9.18+" required="true" />
     <import plugin="hibiscus.scripting.htmlunit" version="2.45+" required="true" />
 	<import plugin="hibiscus.scripting.selenium" version="3.141.59+" />
