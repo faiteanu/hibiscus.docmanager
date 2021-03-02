@@ -19,10 +19,10 @@ Voraussetzung ist Hibiscus in Version 2.10 oder neuer
 ## Plugin installieren
 * Menü Datei / Einstellungen
 * Reiter "Updates"
-* Falls hier "https://faiteanu.github.io/hibiscus.docmanager" noch nicht aufgeführt ist:
+* Falls hier `https://faiteanu.github.io/hibiscus.docmanager` noch nicht aufgeführt ist:
     * Neues Repository hinzufügen
-    * "https://faiteanu.github.io/hibiscus.docmanager" in die Textbox eintragen
-* Doppel-Klick auf "https://faiteanu.github.io/hibiscus.docmanager"
+    * `https://faiteanu.github.io/hibiscus.docmanager` in die Textbox eintragen
+* Doppel-Klick auf `https://faiteanu.github.io/hibiscus.docmanager`
 * Die Installation des gewünschten Plugins durch Doppel-Klick beginnen
 * Hibiscus neu starten
 
