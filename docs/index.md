@@ -1,4 +1,4 @@
-#DocManager plugin für Hibiscus/Jameica
+# DocManager plugin fÃ¼r Hibiscus/Jameica
 
 Repository zum Plugin:  
 [https://github.com/faiteanu/hibiscus.docmanager](https://github.com/faiteanu/hibiscus.docmanager)
