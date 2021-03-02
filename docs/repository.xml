@@ -8,9 +8,5 @@
 		<plugin url="https://faiteanu.github.io/hibiscus.docmanager/" />
 	</plugins>	
 	
-	<plugins name="Libraries">
-		<plugin url="https://scripting-updates.derrichter.de/updates/hibiscus.mashup" />
-		<plugin url="https://scripting-updates.derrichter.de/updates/finance.websync" />
-	</plugins>	
 
 </repository>

@@ -1,14 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
-<!--
- $Revision: 1.4 $
- $Date: 2010/07/25 23:19:14 $
- $Author: willuhn $
-
- Copyright (c) by willuhn software & services
- All rights reserved
--->
-
 <project basedir=".." default="all" name="All">
 
 
@@ -167,7 +158,6 @@
 	      </fileset>
 	    </copy>-->
 		
-		<copy file="plugin.xml" todir="${project.release}" />
 		<copy file="plugin.xml" todir="${project.zipdir}" />
 		<copy file="${build.dir}/COPYING" todir="${project.zipdir}" />
 
