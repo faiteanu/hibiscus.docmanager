@@ -9,16 +9,14 @@ import name.aiteanu.docmanager.gui.action.SyncDocuments;
 import name.aiteanu.docmanager.gui.controller.AccountController;
 
 /**
- * View to show the list of existing projects.
+ * View to show the list of existing accounts.
  */
 public class AccountList extends AbstractView {
 
-	/**
-	 * @see de.willuhn.jameica.gui.AbstractView#bind()
-	 */
+	@Override
 	public void bind() throws Exception {
 
-		GUI.getView().setTitle(Settings.i18n().tr("Vorhandene Zugänge"));
+		GUI.getView().setTitle(Settings.i18n().tr("Available Accounts"));
 
 		AccountController control = new AccountController(this);
 
@@ -27,8 +25,8 @@ public class AccountList extends AbstractView {
 		ButtonArea buttons = new ButtonArea();
 
 		// the last parameter "true" makes the button the default one
-		buttons.addButton(Settings.i18n().tr("Neuer Zugang..."), new OpenAccountDetail(), null, false, "list-add.png");
-		buttons.addButton(Settings.i18n().tr("Dokumente jetzt laden"), new SyncDocuments(), null, true, "mail-send-receive.png");
+		buttons.addButton(Settings.i18n().tr("New account..."), new OpenAccountDetail(), null, false, "list-add.png");
+		// buttons.addButton(Settings.i18n().tr("Load documents"), new SyncDocuments(), null, true, "mail-send-receive.png");
 
 		buttons.paint(getParent());
 

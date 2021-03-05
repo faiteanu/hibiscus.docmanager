@@ -3,6 +3,7 @@ hibiscus.docmanager
 
 Plugin zum Verwalten von Dokumenten in Jameica / Hibiscus
 
+![Dokumente](docs/Dokumente.png)
 
 # Features
 * Abruf von Dokumenten von den Webseiten der unterstützen Institute.

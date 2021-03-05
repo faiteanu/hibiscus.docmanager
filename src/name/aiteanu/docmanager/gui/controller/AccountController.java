@@ -294,7 +294,7 @@ public class AccountController extends AbstractControl
     accountsList.addColumn(Settings.i18n().tr("Label"),"name"); // "name" is the field name from the sql table.
 
     // 6) the following fields are a date fields. So we add a date formatter. 
-    accountsList.addColumn(Settings.i18n().tr("Documents last updated on"),"LastUpdate",new DateFormatter(Settings.DATEFORMAT));
+    accountsList.addColumn(Settings.i18n().tr("Documents last updated on"),"lastupdate",new DateFormatter(Settings.DATEFORMAT));
     //accountsList.addColumn(Settings.i18n().tr("End date"),"enddate",    new DateFormatter(Settings.DATEFORMAT));
 
     // 7) calculated project price (price per hour * hours)
@@ -306,7 +306,7 @@ public class AccountController extends AbstractControl
   }
 
   /**
-   * This method stores the project using the current values. 
+   * This method stores the account using the current values. 
    */
   public void handleStore()
   {

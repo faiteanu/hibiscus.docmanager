@@ -5,7 +5,7 @@ CREATE TABLE DOCMANAGER_ACCOUNT (
   name varchar(255) NULL,
   DocumentsPath varchar(255) NULL,
   comment varchar(1000) NULL,
-  lastupdate date,
+  lastupdate timestamp,
   UNIQUE (id),
   PRIMARY KEY (id)
 );
