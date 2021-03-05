@@ -6,7 +6,7 @@ import de.willuhn.util.ApplicationException;
 import name.aiteanu.docmanager.gui.view.DocumentList;
 
 /**
- * Action to open the account list.
+ * Action to open the documents list.
  */
 public class ListDocuments implements Action {
 

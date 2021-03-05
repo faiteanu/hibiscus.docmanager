@@ -1,12 +1,10 @@
-/**
- * 
- */
+
 package name.aiteanu.docmanager.callback;
 
 import de.willuhn.logging.Logger;
 
 /**
- * @author aitea
+ * @author aiteanu
  *
  */
 public class WebLogger {

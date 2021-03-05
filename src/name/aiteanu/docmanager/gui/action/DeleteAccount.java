@@ -9,13 +9,11 @@ import name.aiteanu.docmanager.Settings;
 import name.aiteanu.docmanager.rmi.Account;
 
 /**
- * Action for "delete document".
+ * Action for "delete account".
  */
 public class DeleteAccount implements Action {
 
-	/**
-	 * @see de.willuhn.jameica.gui.Action#handleAction(java.lang.Object)
-	 */
+	@Override
 	public void handleAction(Object context) throws ApplicationException {
 
 		// check if the context is a document

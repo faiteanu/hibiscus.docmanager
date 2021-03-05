@@ -14,7 +14,7 @@ import name.aiteanu.docmanager.gui.controller.AccountController;
 
 
 /**
- * this is the dialog for the project details. 
+ * this is the dialog for the account details. 
  */
 public class AccountDetail extends AbstractView
 {
@@ -39,18 +39,12 @@ public class AccountDetail extends AbstractView
 		left.addInput(controller.getInstitute());
 		left.addInput(controller.getUserName());
 		left.addInput(controller.getName());
-		//left.addInput(control.getPrice());
-		//left.addInput(control.getStartDate());
-		//left.addInput(control.getEndDate());
 		left.addInput(controller.getPath());
 
 		// right side
 		Container right = new SimpleContainer(columns.getComposite(),true);
 		right.addHeadline(Settings.i18n().tr("Description"));
 		right.addInput(controller.getDescription());
-
-		//c.addHeadline(Settings.i18n().tr("Summary"));
-		//c.addInput(control.getEffortSummary());
 
 		// add some buttons
 		ButtonArea buttons = new ButtonArea();
@@ -71,9 +65,7 @@ public class AccountDetail extends AbstractView
 		//control.getTaskList().paint(getParent());
 	}
 
-	/**
-	 * @see de.willuhn.jameica.gui.AbstractView#unbind()
-	 */
+	@Override
 	public void unbind() throws ApplicationException
 	{
 		// this method will be invoked when leaving the dialog.

@@ -11,12 +11,14 @@ import de.willuhn.jameica.hbci.rmi.HibiscusDBObject;
  * define some getter an setter here.
  * 
  * <pre>
- * CREATE TABLE docmanager_account (
- *   id NUMERIC default UNIQUEKEY('id'),
- *   project_id int(4) NOT NULL,
- *   name varchar(255) NOT NULL,
- *   comment text NOT NULL,
- *   effort double,
+ * CREATE TABLE DOCMANAGER_ACCOUNT (
+ *   id IDENTITY(1),
+ *   institute varchar(255) NOT NULL,
+ *   username varchar(255) NOT NULL,
+ *   name varchar(255) NULL,
+ *   DocumentsPath varchar(255) NULL,
+ *   comment varchar(1000) NULL,
+ *   lastupdate timestamp,
  *   UNIQUE (id),
  *   PRIMARY KEY (id)
  * );

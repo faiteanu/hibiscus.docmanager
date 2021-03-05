@@ -10,9 +10,7 @@ import name.aiteanu.docmanager.gui.view.AccountList;
  */
 public class ListAccounts implements Action {
 
-	/**
-	 * @see de.willuhn.jameica.gui.Action#handleAction(java.lang.Object)
-	 */
+	@Override
 	public void handleAction(Object context) throws ApplicationException {
 		GUI.startView(AccountList.class, null);
 	}

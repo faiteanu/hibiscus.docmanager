@@ -1,11 +1,6 @@
 package name.aiteanu.docmanager;
 
-import java.io.File;
-
-import de.willuhn.datasource.db.EmbeddedDatabase;
 import de.willuhn.jameica.plugin.AbstractPlugin;
-import de.willuhn.jameica.plugin.Manifest;
-import de.willuhn.jameica.plugin.PluginResources;
 import de.willuhn.jameica.plugin.Version;
 import de.willuhn.jameica.system.Application;
 import de.willuhn.logging.Logger;

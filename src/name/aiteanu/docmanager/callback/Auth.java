@@ -24,9 +24,9 @@ import org.openqa.selenium.WebDriver;
 public class Auth {
   static Map<String, String> PassCache = new HashMap<>();
   
-  static Map<String, String[]> QuestCache = (Map)new HashMap<>();
+  static Map<String, String[]> QuestCache = new HashMap<>();
   
-  static Map<String, String[]> AnswerCache = (Map)new HashMap<>();
+  static Map<String, String[]> AnswerCache = new HashMap<>();
   
   private static String getPasswort(String login_Benutzer, ProgressMonitor monitor, String institutAlias, String logo, int minPassLength, int maxPassLength) throws Exception {
     boolean isSelfException = false;
@@ -54,7 +54,7 @@ public class Auth {
       try {
         if (StringCharUtils.isNullOrEmptyOrNothing(login_Passwort)) {
           String logUserString = login_Benutzer.substring(0, 3) + "*******";
-          Logger.info("Passwort fÃ¼r Anmeldekennung " + logUserString + " wird abgefragt ...");
+          Logger.info("Passwort für Anmeldekennung " + logUserString + " wird abgefragt ...");
           //login_Passwort = WebDialogs.askPIN(minPassLength, maxPassLength, logo);
           login_Passwort = name.aiteanu.docmanager.callback.WebDialogs.askPassword(minPassLength, maxPassLength, 
         		  "Bitte geben Sie Ihr Passwort / Ihre PIN zum Konto ein.<br>Benutzername: " + login_Benutzer, "Passwort-Eingabe " + login_Benutzer,logo);

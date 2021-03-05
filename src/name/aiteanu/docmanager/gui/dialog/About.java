@@ -27,7 +27,7 @@ public class About extends AbstractDialog
 	public About(int position)
 	{
 		super(position);
-		this.setTitle(Settings.i18n().tr("About..."));
+		this.setTitle(Settings.i18n().tr("About DocManager..."));
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class About extends AbstractDialog
 
 		AbstractPlugin p = Application.getPluginLoader().getPlugin(DocManager.class);
 
-		group.addLabelPair(Settings.i18n().tr("Version"), 					new LabelInput(""+p.getManifest().getVersion()));
+		group.addLabelPair(Settings.i18n().tr("Version"), 			new LabelInput(""+p.getManifest().getVersion()));
 		group.addLabelPair(Settings.i18n().tr("Working directory"), new LabelInput(""+p.getResources().getWorkPath()));
 
 		ButtonArea buttons = new ButtonArea();
