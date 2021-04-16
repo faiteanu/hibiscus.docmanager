@@ -14,8 +14,9 @@
   <requires jameica="1.10+">
     <import plugin="hibiscus" version="2.10+" required="true" />
     <import plugin="hibiscus.mashup" version="0.9.18+" required="true" />
+    <import plugin="hibiscus.scripting.chromedriver" version="89.0.4389.23+" required="true" />
     <import plugin="hibiscus.scripting.htmlunit" version="2.45+" required="true" />
-	<import plugin="hibiscus.scripting.selenium" version="3.141.59+" />
+    <import plugin="hibiscus.scripting.selenium" version="3.141.59+" />
     <import plugin="finance.websync" version="0.9.21+" required="true" />
   </requires>
 
