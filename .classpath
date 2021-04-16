@@ -16,8 +16,8 @@
 	<classpathentry kind="src" path="/hibiscus"/>
 	<classpathentry kind="lib" path="/hibiscus.scripting.htmlunit/lib/htmlunit-2.45.0.jar"/>
 	<classpathentry kind="lib" path="/hibiscus.scripting.htmlunit/lib/commons-io-2.8.0.jar"/>
-	<classpathentry kind="lib" path="/hibiscus.scripting.selenium/lib/SeleniumDownloadHelper-0.3.2-SNAPSHOT.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
 	<classpathentry kind="lib" path="/hibiscus.scripting.selenium/lib/guava-25.0-jre.jar"/>
+	<classpathentry kind="lib" path="/hibiscus.scripting.selenium/lib/SeleniumDownloadHelper-0.3.1.1-LY-SNAPSHOT.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -374,7 +374,7 @@ public class WebSyncDeka {
 
 		SeleniumDownloadHelper downloader = new SeleniumDownloadHelper(seleniumWebDriver);
 
-		LogInfo.invoke(LogInfo, new Object[] { InstitutOptions.LOGIDENT + getLogMethod + "Gew√§hlte Ordner durchgehen ..." });
+		LogInfo.invoke(LogInfo, new Object[] { InstitutOptions.LOGIDENT + getLogMethod + "Gew‰hlte Ordner durchgehen ..." });
 //	    for(WebFolder folder : folders) {
 		try {
 			seleniumWebDriver.get(InstitutOptions.MAILBOX_URL);
@@ -433,6 +433,9 @@ public class WebSyncDeka {
 							try { // download file and set metadata
 								FileData fd = downloader.getFileFromUrlRaw(new URL(url));
 								String fileName = fd.getGuessedFilename().replaceAll("[\\\\/:*?\"<>|]", "_");
+								if(fileName.contains("documentId")) {
+									fileName = fileName.substring(fileName.indexOf("documentId=") + 11) + ".pdf";
+								}
 								File output = new File(account.getDocumentsPath(), fileName);
 								doc.setLocalFolder(output.getParent());
 								doc.setFilename(fileName);
@@ -444,7 +447,7 @@ public class WebSyncDeka {
 
 							} catch (Exception ex) {
 								MonitorLog.invoke(MonitorLog, new Object[] { InstitutOptions.LOGIDENT + getLogMethod + " error while downloading file : " + ex.getMessage() });
-								doc.setComment("Datei konnte nicht von der DKB-Webseite geladen werden. " + ex.getMessage());
+								doc.setComment("Datei konnte nicht von der Deka-Webseite geladen werden. " + ex.getMessage());
 							}
 
 							doc.store();

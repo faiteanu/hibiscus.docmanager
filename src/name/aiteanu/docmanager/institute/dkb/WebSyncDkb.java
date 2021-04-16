@@ -338,7 +338,7 @@ public class WebSyncDkb {
 		    	} while(hasNextPage);
 		    } catch (Exception error) {
 		    	isSelfException = true;
-		    	throw new Exception("Auslesen der Ordner fehlgeschlagen: " + error.getMessage());
+		    	throw new Exception("Auslesen der Ordner fehlgeschlagen: " + error.getMessage(), error);
 		    } 
 		    
 //	    }
@@ -499,7 +499,11 @@ public class WebSyncDkb {
 
 				try { // download file and set metadata
 					FileData fd = downloader.getFileFromUrlRaw(new URL(url));
-					String fileName = fd.getGuessedFilename().replaceAll("[\\\\/:*?\"<>|]", "_");
+					String fileName = fd.getGuessedFilename();
+					if(fileName.contains("filename")) { // old downloader version cannot get correct name. Extract manually
+						fileName = titleStr + ".pdf";
+					}
+					fileName = fileName.replaceAll("[\\\\/:*?\"<>|]", "_");
 					File output = new File(account.getDocumentsPath() + File.separator + folder.getName(), fileName);
 					doc.setLocalFolder(output.getParent());
 					doc.setFilename(fileName);
@@ -538,7 +542,7 @@ public class WebSyncDkb {
 			}
 		}else {
 			LogInfo.invoke(LogInfo, new Object[] {
-					LOGIDENT + getLogMethod + " Document already downloaded : " + created.getText() + " " +  titleStr});
+					LOGIDENT + getLogMethod + " Document already downloaded : " + createdOn + " " +  titleStr});
 		}
 
 		return null;
