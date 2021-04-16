@@ -1,12 +1,3 @@
-/**********************************************************************
- *
- * Copyright (c) 2004 Olaf Willuhn
- * All rights reserved.
- * 
- * This software is copyrighted work licensed under the terms of the
- * Jameica License.  Please consult the file "LICENSE" for details. 
- *
- **********************************************************************/
 
 package name.aiteanu.docmanager.gui.action;
 
@@ -35,7 +26,7 @@ public class OpenDocument implements Action
 	public void handleAction(Object context) throws ApplicationException
 	{
 		if (context == null || (!(context instanceof Document) && !(context instanceof Document[])))
-			throw new ApplicationException(i18n.tr("Bitte wÃ¤hlen Sie das zu Ã¶ffnende Dokument"));
+			throw new ApplicationException(i18n.tr("Bitte wählen Sie das zu öffnende Dokument"));
 
 		if(context instanceof Document) {
 			context = new Document[] { (Document)context };
