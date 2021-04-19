@@ -1,0 +1,15 @@
+<form>
+	<p>
+		<span color="header" font="header">Details zum Zugang</span>
+	</p>
+
+	<p>
+	  <b>Benutzer</b> ist der Benutzername oder Kontonummer, so wie Sie ihn auf der Webseite der Bank eingeben würden.<br/>
+	  <b>Bezeichnung</b> kann frei gefüllt werden, beispielsweise mit dem Namen des Instituts oder der Kontonummer.<br/>
+	  <b>Ablagepfad</b> sollte pro Zugang einen eigenen Ordner enthalten, damit sich Dokumente verschiedener Institute bei 
+	  gleichem Namen nicht überschreiben.<br/>
+	</p>
+	<p>
+		Ein Passwort wird an dieser Stelle nicht benötigt, sondern erst beim Abruf der Dokumente.
+	</p>
+</form>

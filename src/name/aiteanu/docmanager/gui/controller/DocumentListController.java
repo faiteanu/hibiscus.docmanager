@@ -272,7 +272,7 @@ public class DocumentListController extends AbstractControl
 			return this.unread;
 
 		this.unread = new CheckboxInput(settings.getBoolean("documents.filter.unread",false));
-		this.unread.setName(Settings.i18n().tr("Nur ungelesene Dokumente anzeigen"));
+		this.unread.setName(Settings.i18n().tr("Show only unread documents"));
 		this.unread.addListener(this.listener);
 		return this.unread;
 	}

@@ -171,7 +171,7 @@ public class DocumentController extends AbstractControl
     Date start = getDocument().getCreatedOn();
     if (start == null)
       start = new Date();
-    createdOnDate = new DateInput(start,Settings.DATEFORMAT);
+    createdOnDate = new DateInput(start);
     createdOnDate.setName(Settings.i18n().tr("Created on"));
     return createdOnDate;
   }
@@ -187,7 +187,7 @@ public class DocumentController extends AbstractControl
     if (downloadedOnDate != null)
       return downloadedOnDate;
     
-    downloadedOnDate = new DateInput(getDocument().getDownloadedOn(), Settings.DATEFORMAT);
+    downloadedOnDate = new DateInput(getDocument().getDownloadedOn());
     downloadedOnDate.setName(Settings.i18n().tr("Downloaded on"));
     return downloadedOnDate;
   }
@@ -197,7 +197,7 @@ public class DocumentController extends AbstractControl
     if (readOnDate != null)
       return readOnDate;
     
-    readOnDate = new DateInput(getDocument().getReadOn(), Settings.DATEFORMAT);
+    readOnDate = new DateInput(getDocument().getReadOn());
     readOnDate.setName(Settings.i18n().tr("Read on"));
     return readOnDate;
   }

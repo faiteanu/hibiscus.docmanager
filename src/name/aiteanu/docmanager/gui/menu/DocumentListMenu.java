@@ -26,8 +26,8 @@ public class DocumentListMenu extends ContextMenu
 	public DocumentListMenu()
 	{
 		// CheckedContextMenuItems will be disabled, if the user clicks into an empty space of the table
-		addItem(new CheckedContextMenuItem(Settings.i18n().tr("Open document"), new OpenDocument(), "document-open.png"));
-		addItem(new CheckedContextMenuItem(Settings.i18n().tr("Details..."), new OpenDocumentDetail()));
+		addItem(new CheckedContextMenuItem(Settings.i18n().tr("Open"), new OpenDocument(), "application-pdf.png"));
+		addItem(new CheckedContextMenuItem(Settings.i18n().tr("Edit"), new OpenDocumentDetail(), "document-open.png"));
 		addItem(new CheckedContextMenuItem(Settings.i18n().tr("Mark as read"), new MarkDocumentAsRead(), "emblem-default.png") { 
 			@Override
 			public boolean isEnabledFor(Object o) {

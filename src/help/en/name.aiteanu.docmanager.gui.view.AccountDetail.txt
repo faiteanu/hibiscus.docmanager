@@ -1,0 +1,15 @@
+<form>
+	<p>
+		<span color="header" font="header">Account details</span>
+	</p>
+
+	<p>
+		<b>User</b> is the ID or account number, as you would use it when logging in to the institute's web site.<br/>
+	  <b>Label</b> can be set as desired, e.g. to the institute name or account number.<br/>
+	  <b>Store documents in</b> should be a different path for each account, so that documents with identical names
+	  from different institutes do not overwrite each other.<br/>
+	</p>
+	<p>
+		A password is not configured here. It is only needed when synchronizing documents. 
+	</p>
+</form>

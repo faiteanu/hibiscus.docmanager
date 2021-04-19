@@ -15,7 +15,7 @@ Plugin zum Verwalten von Dokumenten in Jameica / Hibiscus
 * DekaBank
 
 # Installation
-Voraussetzung ist Hibiscus in Version 2.10 oder neuer
+Voraussetzung ist Jameica in Version 2.10 oder neuer
 
 ## Plugin installieren
 * Menü Datei / Einstellungen

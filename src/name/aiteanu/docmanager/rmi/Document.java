@@ -7,7 +7,7 @@ import de.willuhn.datasource.rmi.DBObject;
 
 
 /**
- * Interface of the business object for accounts.
+ * Interface of the business object for documents.
  * According to the SQL table, we define some getter an setter here.
  * <pre>
  * CREATE TABLE DOCMANAGER_DOCUMENT (
