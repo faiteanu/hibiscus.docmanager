@@ -3,12 +3,17 @@
  */
 package name.aiteanu.docmanager.synchronize;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
 import de.willuhn.datasource.rmi.DBIterator;
+import de.willuhn.jameica.hbci.messaging.ImportMessage;
+import de.willuhn.jameica.messaging.MessagingFactory;
+import de.willuhn.jameica.messaging.TextMessage;
+import de.willuhn.jameica.system.Application;
 import de.willuhn.jameica.system.BackgroundTask;
 import de.willuhn.logging.Logger;
 import de.willuhn.util.ApplicationException;
@@ -17,6 +22,7 @@ import name.aiteanu.docmanager.Settings;
 import name.aiteanu.docmanager.institute.deka.WebSyncDeka;
 import name.aiteanu.docmanager.institute.dkb.WebSyncDkb;
 import name.aiteanu.docmanager.rmi.Account;
+import name.aiteanu.docmanager.rmi.Document;
 
 /**
  * @author aiteanu
@@ -80,7 +86,6 @@ public class SynchronizeDocuments implements BackgroundTask {
 					//e.printStackTrace();
 					//throw new ApplicationException("Fehler beim Laden der Dokumente." , e);
 				}
-				//Application.getMessagingFactory().sendMessage(new KursUpdatesMsg(wpid));
 				
 				++currentIndex;
 			}
@@ -99,7 +104,6 @@ public class SynchronizeDocuments implements BackgroundTask {
 		monitor.setStatus(ProgressMonitor.STATUS_DONE);
 		monitor.setPercentComplete(101);
 
-		// TODO überprüfen
 		if(syncHasErrors) monitor.setStatus(ProgressMonitor.STATUS_ERROR);
 	}
 
@@ -113,4 +117,16 @@ public class SynchronizeDocuments implements BackgroundTask {
 		return false;
 	}
 
+	public static void notifyDocumentListeners(Document doc) {
+		try
+		{
+			Application.getMessagingFactory().sendMessage(new ImportMessage(doc));
+			Application.getMessagingFactory().getMessagingQueue("hibiscus.ibankstatement")
+					.sendMessage(new TextMessage(doc.getLocalFolder() + File.separator + doc.getFilename()));
+		}
+		catch (Exception ex)
+		{
+			Logger.error("error while sending import message",ex);
+		}
+	}
 }

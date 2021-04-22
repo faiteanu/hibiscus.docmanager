@@ -46,6 +46,7 @@ import name.aiteanu.docmanager.callback.WebProgressMonitor;
 import name.aiteanu.docmanager.data.WebFolder;
 import name.aiteanu.docmanager.rmi.Account;
 import name.aiteanu.docmanager.rmi.Document;
+import name.aiteanu.docmanager.synchronize.SynchronizeDocuments;
 
 public class WebSyncDkb {
 	
@@ -112,46 +113,14 @@ public class WebSyncDkb {
 	      Logger.info("INFO: es werden nun gleich alle aktive DKB-Konten zur Anmeldekennung '" + logUserString + "' abgearbeitet ...");
 	      monitor.log("INFO: es werden nun gleich alle aktive DKB-Konten zur Anmeldekennung '" + logUserString + "' abgearbeitet ...");
 	      
-	      folderQueue = new LinkedList<WebFolder>();
-	      
-	      enqueueFolder(new WebFolder("", MAILBOX_URL));
-	      
-//	      ArrayList<WebFolder> folders = null;
-//	      try {
-//	    	  folders = WebSyncDkb.getMailboxFolders(seleniumWebDriver, WebLogger.class, WebProgressMonitor.class, WebDialogs.class);
-//	    	  for(WebFolder f : folders) {
-//	    		  Logger.info(f.getName() + " " + f.getRelativeUrl());
-//	    	  }	    	   	   
-//	      } catch (Exception error) {
-//	    	  isSelfException = true;
-//	    	  throw new Exception("Order im Postfach konnten nicht ermittelt werden.");
-//	      } 
-//	      
-//	      HashSet<String> skippedFolders = new HashSet<String>();
-////	      skippedFolders.add("Archiv");
-//	      skippedFolders.add("Tresor");
-////	      
-//	      skippedFolders.add("Kontoauszüge");
-//	      skippedFolders.add("Kreditkartenabrechnungen");
-//	      skippedFolders.add("Mitteilungen");
-//	      skippedFolders.add("Steuerbescheinigungen");
-//	      skippedFolders.add("Vertragsinformationen");
-//	      skippedFolders.add("Wertpapierdokumente");
-//	      
-//	      ArrayList<WebFolder> foldersToLoad = new ArrayList<WebFolder>();
-//	      for(WebFolder f : folders) {
-//    		  if(!skippedFolders.contains(f.getName())) {
-//    			  foldersToLoad.add(f);
-//    		  }
-//    	  }	
+	      folderQueue = new LinkedList<WebFolder>();	      
+	      enqueueFolder(new WebFolder("", MAILBOX_URL));	      
 	      
 	      while(!folderQueue.isEmpty()) {
 	    	  WebFolder folder = folderQueue.poll();
 		      try {
 		    	  parseSubfolders(account, folder, "", seleniumWebDriver, WebLogger.class, WebProgressMonitor.class, WebDialogs.class);
-//		  		  String localPath = account.getDocumentsPath(); // res.getWorkPath() + "/doc/DKB";
-//		    	  downloadDocuments(account, folder, localPath, seleniumWebDriver, WebLogger.class, WebProgressMonitor.class, WebDialogs.class);
-		    	   
+   	   
 		      } catch (Exception error) {
 		    	  isSelfException = true;
 		    	  throw new Exception("Dokumente im Postfach konnten nicht geladen werden. " + folder.getName(), error);
@@ -195,10 +164,10 @@ public class WebSyncDkb {
 	
 	protected void enqueueFolder(WebFolder webFolder) {
 		HashSet<String> skippedFolders = new HashSet<String>();
-		// skippedFolders.add("Archiv");
+//		skippedFolders.add("Archiv");
 //		skippedFolders.add("Tresor");
 //		//	      
-//		skippedFolders.add("Kontoauszüge");
+//		skippedFolders.add("Kontoausz�ge");
 //		skippedFolders.add("Kreditkartenabrechnungen");
 //		skippedFolders.add("Mitteilungen");
 //		skippedFolders.add("Steuerbescheinigungen");
@@ -210,53 +179,6 @@ public class WebSyncDkb {
 		}
 	}
 
-//	public ArrayList<WebFolder> getMailboxFolders(WebDriver seleniumWebDriver, Class<?> externalLogger, Class<?> externalProgressMonitor, Class<?> externalDialogInterface) throws Exception {
-//	    Method LogInfo = externalLogger.getMethod("info", new Class[] { String.class });
-//	    Method LogWarn = externalLogger.getMethod("warn", new Class[] { String.class });
-//	    Method LogDebug = externalLogger.getMethod("debug", new Class[] { String.class });
-//	    Method LogTrace = externalLogger.getMethod("trace", new Class[] { String.class });
-//	    Method MonitorLog = externalProgressMonitor.getMethod("log", new Class[] { String.class });
-//	    final String getLogMethod = "[getMailboxFolders] ";
-//	    boolean isSelfException = false;
-//	    WebDriverWait wait1 = new WebDriverWait(seleniumWebDriver, 1L);
-//	    LogInfo.invoke(LogInfo, new Object[] { LOGIDENT + getLogMethod + "Ordner ermitteln ... (GET " + MAILBOX_URL + ")" });
-//	    try {
-//	      seleniumWebDriver.get(MAILBOX_URL);
-//	      String LOADER_PATH = "//div[@class='ajax_loading' and @stlye='']"; // WebUtils.LOADER_PATH
-//	      String LOADER_TEXT = "DummyLoaderText"; // WebUtils.LOADER_TEXT
-//	      SeleniumUtils.waitForPageLoading(seleniumWebDriver, LOADER_PATH, LOADER_TEXT, true, externalLogger);
-//	      LogDebug.invoke(LogDebug, new Object[] { LOGIDENT + getLogMethod + "accountspage: current webdriver hash: " + seleniumWebDriver
-//	            .getWindowHandle().hashCode() });
-//	    } catch (Exception error) {
-//	      isSelfException = true;
-//	      throw new Exception("WebDriver-Fehler: " + ExceptionUtils.getStackTrace(error));
-//	    } 
-//	    String pageLoginAccounts = seleniumWebDriver.getPageSource();
-//	    try {
-//	      WebUtils.checkSeleniumResponseHasError(pageLoginAccounts, seleniumWebDriver, externalLogger, externalProgressMonitor, externalDialogInterface);
-//	    } catch (Exception error) {
-//	      isSelfException = true;
-//	      throw new Exception("Fehler auf der Konto" + error.getMessage());
-//	    } 
-//	    
-//	    ArrayList<WebFolder> folders = new ArrayList<WebFolder>();
-//	    try {
-//	    	List<WebElement> elements = seleniumWebDriver.findElements(By.xpath("//a[@tid='gotoFolder' and not(contains(@class, 'icons'))]"));
-//	    	LogTrace.invoke(LogTrace, new Object[] { LOGIDENT + getLogMethod + " Folders: " + elements.size() });
-//	    	for(WebElement el : elements) {
-//	    		String name = el.getText();
-//	    		if(name.contains("(")) { 
-//	    			name = name.substring(0, name.indexOf("(") - 1);
-//	    		}
-//	    		folders.add(new WebFolder(name, el.getAttribute("href")));
-//	    	}
-//	    } catch (Exception error) {
-//	    	isSelfException = true;
-//	    	throw new Exception("Auslesen der Ordner fehlgeschlagen: " + error.getMessage());
-//	    } 
-//	    return folders;	    
-//	  }
-
 	public boolean parseSubfolders(Account account, WebFolder folder, String localPath, WebDriver seleniumWebDriver, Class<?> externalLogger, Class<?> externalProgressMonitor, Class<?> externalDialogInterface) throws Exception {
 	    Method LogInfo = externalLogger.getMethod("info", new Class[] { String.class });
 	    Method LogWarn = externalLogger.getMethod("warn", new Class[] { String.class });
@@ -266,200 +188,80 @@ public class WebSyncDkb {
 	    String getLogMethod = "[parseSubfolders] ";
 	    boolean isSelfException = false;
 	    WebDriverWait wait1 = new WebDriverWait(seleniumWebDriver, 1L);
-	    
-	    
-//		SeleniumDownloadHelper downloader = new SeleniumDownloadHelper(seleniumWebDriver);
-	    
+	       
 	    
 //	    LogInfo.invoke(LogInfo, new Object[] { LOGIDENT + getLogMethod + "Gewählte Ordner durchgehen ..." });
-//	    for(WebFolder folder : folders) {
-	    	try {
-	    		LogInfo.invoke(LogInfo, new Object[] { LOGIDENT + getLogMethod + " Ordner: " + folder.getRelativeUrl() });
-	    		seleniumWebDriver.get(folder.getRelativeUrl());
-	    		String LOADER_PATH = "//div[@class='ajax_loading' and @stlye='']"; // WebUtils.LOADER_PATH
-	    		String LOADER_TEXT = "DummyLoaderText"; // WebUtils.LOADER_TEXT
-	    		SeleniumUtils.waitForPageLoading(seleniumWebDriver, LOADER_PATH, LOADER_TEXT, true, externalLogger);
-	    	} catch (Exception error) {
-	    		isSelfException = true;
-	    		throw new Exception("WebDriver-Fehler: " + ExceptionUtils.getStackTrace(error));
-	    	} 
-	    	String pageSource = seleniumWebDriver.getPageSource();
-	    	try {
-	    		WebUtils.checkSeleniumResponseHasError(pageSource, seleniumWebDriver, externalLogger, externalProgressMonitor, externalDialogInterface);
-	    	} catch (Exception error) {
-	    		isSelfException = true;
-	    		throw new Exception("Fehler in dem Ordner" + error.getMessage());
-	    	} 
-	    
-		    
-		    // Find documents in folder
-		    try {
-		    	boolean hasNextPage = false;
-		    	
-//		    	DateFormat df = new SimpleDateFormat("dd.MM.yyyy");		    	
-		    	
-		    	do{
-			    	//List<WebElement> elements = seleniumWebDriver.findElements(By.xpath("//a[contains(@class,'iconSpeichern')]"));
-		    		List<WebElement> elements = seleniumWebDriver.findElements(By.cssSelector(".abaxx-table tr"));
-			    	LogTrace.invoke(LogTrace, new Object[] { LOGIDENT + getLogMethod + " Folders: " + elements.size() });
-			    	
-			    	for(WebElement el : elements) {
-			    		//WebElement title = findElement(el, By.cssSelector(".abaxx-aspect-subject")); // in Unterordnern
-			    		//if(title == null) {
-			    		//	title = findElement(el, By.cssSelector(".subject")); // direkt im Postfach heißt das Element anders
-			    		//}
-			    		WebElement linkFolder = findElement(el, By.cssSelector(".evt-gotoFolder"));
 
-			    		if(linkFolder != null) {
-			    			String titleStr = linkFolder.getText();
-			    			if(titleStr.contains("(")) { // es kann sein, dass die Anzahl der ungelesenen Dokumente angezeigt wird, zB "Wertpapierdokumente (3)"
-			    				titleStr = titleStr.substring(0, titleStr.indexOf("(") - 1);
-				    		}
-			    			String url = linkFolder.getAttribute("href");
-			    			String folderName = ("".equals(folder.getName()) ? "" : folder.getName() + "/") + titleStr;
-			    			enqueueFolder(new WebFolder(folderName, url));
-			    		}else {
-			    			WebElement linkFile = findElement(el, By.cssSelector(".evt-getMailboxAttachment"));
-			    			if(linkFile != null) {
-			    				downloadDocument(el, account, folder, localPath, seleniumWebDriver, externalLogger, externalProgressMonitor, externalDialogInterface);
-			    			}
+    	try {
+    		LogInfo.invoke(LogInfo, new Object[] { LOGIDENT + getLogMethod + " Ordner: " + folder.getRelativeUrl() });
+    		seleniumWebDriver.get(folder.getRelativeUrl());
+    		String LOADER_PATH = "//div[@class='ajax_loading' and @stlye='']"; // WebUtils.LOADER_PATH
+    		String LOADER_TEXT = "DummyLoaderText"; // WebUtils.LOADER_TEXT
+    		SeleniumUtils.waitForPageLoading(seleniumWebDriver, LOADER_PATH, LOADER_TEXT, true, externalLogger);
+    	} catch (Exception error) {
+    		isSelfException = true;
+    		throw new Exception("WebDriver-Fehler: " + ExceptionUtils.getStackTrace(error));
+    	} 
+    	String pageSource = seleniumWebDriver.getPageSource();
+    	try {
+    		WebUtils.checkSeleniumResponseHasError(pageSource, seleniumWebDriver, externalLogger, externalProgressMonitor, externalDialogInterface);
+    	} catch (Exception error) {
+    		isSelfException = true;
+    		throw new Exception("Fehler in dem Ordner" + error.getMessage());
+    	} 
+    
+	    
+	    // Find documents in folder
+	    try {
+	    	boolean hasNextPage = false;
+    	
+	    	do{
+		    	//List<WebElement> elements = seleniumWebDriver.findElements(By.xpath("//a[contains(@class,'iconSpeichern')]"));
+	    		List<WebElement> elements = seleniumWebDriver.findElements(By.cssSelector(".abaxx-table tr"));
+		    	LogTrace.invoke(LogTrace, new Object[] { LOGIDENT + getLogMethod + " Folders: " + elements.size() });
+		    	
+		    	for(WebElement el : elements) {
+		    		//WebElement title = findElement(el, By.cssSelector(".abaxx-aspect-subject")); // in Unterordnern
+		    		//if(title == null) {
+		    		//	title = findElement(el, By.cssSelector(".subject")); // direkt im Postfach heißt das Element anders
+		    		//}
+		    		WebElement linkFolder = findElement(el, By.cssSelector(".evt-gotoFolder"));
+
+		    		if(linkFolder != null) {
+		    			String titleStr = linkFolder.getText();
+		    			if(titleStr.contains("(")) { // es kann sein, dass die Anzahl der ungelesenen Dokumente angezeigt wird, zB "Wertpapierdokumente (3)"
+		    				titleStr = titleStr.substring(0, titleStr.indexOf("(") - 1);
 			    		}
-			    	
-			    	}
-			    	
-			    	WebElement elementNext = findElement(seleniumWebDriver, By.xpath("//span[@class='pager-navigator-next']//a"));//seleniumWebDriver.findElement(By.xpath("//span[@class='pager-navigator-next']//a"));
-			    	if(elementNext != null) {
-			    		hasNextPage = true;
-			    		elementNext.click();
-			    		SeleniumUtils.waitForJSandJQueryToLoad(seleniumWebDriver);
-			    	} else {
-			    		hasNextPage = false;
-			    	}
-		    	} while(hasNextPage);
-		    } catch (Exception error) {
-		    	isSelfException = true;
-		    	throw new Exception("Auslesen der Ordner fehlgeschlagen: " + error.getMessage(), error);
-		    } 
+		    			String url = linkFolder.getAttribute("href");
+		    			String folderName = ("".equals(folder.getName()) ? "" : folder.getName() + "/") + titleStr;
+		    			enqueueFolder(new WebFolder(folderName, url));
+		    		}else {
+		    			WebElement linkFile = findElement(el, By.cssSelector(".evt-getMailboxAttachment"));
+		    			if(linkFile != null) {
+		    				downloadDocument(el, account, folder, localPath, seleniumWebDriver, externalLogger, externalProgressMonitor, externalDialogInterface);
+		    			}
+		    		}
+		    	
+		    	}
+		    	
+		    	WebElement elementNext = findElement(seleniumWebDriver, By.xpath("//span[@class='pager-navigator-next']//a"));
+		    	if(elementNext != null) {
+		    		hasNextPage = true;
+		    		elementNext.click();
+		    		SeleniumUtils.waitForJSandJQueryToLoad(seleniumWebDriver);
+		    	} else {
+		    		hasNextPage = false;
+		    	}
+	    	} while(hasNextPage);
+	    } catch (Exception error) {
+	    	isSelfException = true;
+	    	throw new Exception("Auslesen der Ordner fehlgeschlagen: " + error.getMessage(), error);
+	    } 
 		    
-//	    }
 	    return true;
 	    
 	  }
 
-//	public boolean downloadDocuments(Account account, WebFolder folder, String localPath, WebDriver seleniumWebDriver, Class<?> externalLogger, Class<?> externalProgressMonitor, Class<?> externalDialogInterface) throws Exception {
-//	    Method LogInfo = externalLogger.getMethod("info", new Class[] { String.class });
-//	    Method LogWarn = externalLogger.getMethod("warn", new Class[] { String.class });
-//	    Method LogDebug = externalLogger.getMethod("debug", new Class[] { String.class });
-//	    Method LogTrace = externalLogger.getMethod("trace", new Class[] { String.class });
-//	    Method MonitorLog = externalProgressMonitor.getMethod("log", new Class[] { String.class });
-//	    String getLogMethod = "[downloadDocuments] ";
-//	    boolean isSelfException = false;
-//	    WebDriverWait wait1 = new WebDriverWait(seleniumWebDriver, 1L);
-//	    
-//	    
-//		SeleniumDownloadHelper downloader = new SeleniumDownloadHelper(seleniumWebDriver);
-//	    
-//	    
-//	    LogInfo.invoke(LogInfo, new Object[] { LOGIDENT + getLogMethod + "Gewählte Ordner durchgehen ..." });
-////	    for(WebFolder folder : folders) {
-//	    	try {
-//	    		seleniumWebDriver.get(folder.getRelativeUrl());
-//	    		String LOADER_PATH = "//div[@class='ajax_loading' and @stlye='']"; // WebUtils.LOADER_PATH
-//	    		String LOADER_TEXT = "DummyLoaderText"; // WebUtils.LOADER_TEXT
-//	    		SeleniumUtils.waitForPageLoading(seleniumWebDriver, LOADER_PATH, LOADER_TEXT, true, externalLogger);
-//	    		LogInfo.invoke(LogInfo, new Object[] { LOGIDENT + getLogMethod + " Ordner: " + folder.getRelativeUrl() });
-//	    	} catch (Exception error) {
-//	    		isSelfException = true;
-//	    		throw new Exception("WebDriver-Fehler: " + ExceptionUtils.getStackTrace(error));
-//	    	} 
-//	    	String pageLoginAccounts = seleniumWebDriver.getPageSource();
-//	    	try {
-//	    		WebUtils.checkSeleniumResponseHasError(pageLoginAccounts, seleniumWebDriver, externalLogger, externalProgressMonitor, externalDialogInterface);
-//	    	} catch (Exception error) {
-//	    		isSelfException = true;
-//	    		throw new Exception("Fehler auf der Konto" + error.getMessage());
-//	    	} 
-//	    
-//		    
-//		    // Find documents in folder
-//		    try {
-//		    	boolean hasNextPage = false;
-//		    	
-//		    	DateFormat df = new SimpleDateFormat("dd.MM.yyyy");		    	
-//		    	
-//		    	do{
-//			    	//List<WebElement> elements = seleniumWebDriver.findElements(By.xpath("//a[contains(@class,'iconSpeichern')]"));
-//		    		List<WebElement> elements = seleniumWebDriver.findElements(By.xpath("//tbody/tr[contains(@class,'mbo-folderview-row')]"));
-//			    	LogTrace.invoke(LogTrace, new Object[] { LOGIDENT + getLogMethod + " Folders: " + elements.size() });
-//			    	
-//			    	for(WebElement el : elements) {
-//			    		try {
-//			    		WebElement created = findElement(el, By.cssSelector(".abaxx-aspect-created"));
-//			    		WebElement title = findElement(el, By.cssSelector(".abaxx-aspect-subject"));
-//			    		WebElement link = findElement(el, By.cssSelector(".iconSpeichern0"));
-//			    		Date createdOn = (created != null ? df.parse(created.getText()) : new Date());
-//			    		String titleStr = title.getText();
-//			    		String url = link.getAttribute("href");
-//			    		
-//			    		DBIterator<Document> existingDocs = Settings.getDBService().createList(Document.class);	
-//			    		existingDocs.addFilter("accountid = ?", account.getID());
-//			    		existingDocs.addFilter("remotefolder = ?", folder.getName());
-//			    		existingDocs.addFilter("title = ?", titleStr);
-//			    		if(!existingDocs.hasNext()) { // only add document which did not exist in the DB
-//				    		try
-//							{
-//				    			FileData fd = downloader.getFileFromUrlRaw(new URL(url));
-//				    			String fileName = fd.getGuessedFilename().replaceAll("[\\\\/:*?\"<>|]", "_");
-//				    			File output = new File(localPath + File.separator + folder.getName(), fileName);
-//
-//				    			// create new document
-//				    			Document doc =  (Document) Settings.getDBService().createObject(Document.class, null);
-//				    			doc.setAccount(account);
-//				    			doc.setRemoteFolder(folder.getName());
-//				    			doc.setTitle(titleStr);
-//				    			doc.setLocalFolder(output.getParent());
-//				    			doc.setFilename(fileName);
-//				    			doc.setCreatedOn(createdOn);
-//				    			doc.setDownloadedOn(new Date());
-//				    			doc.store();
-//				    			
-//				    			LogInfo.invoke(LogInfo, new Object[] { LOGIDENT + getLogMethod + " Storing : " + output.getAbsolutePath() });
-//				    			FileUtils.writeByteArrayToFile(output, fd.getData());
-//				    			output.setLastModified(doc.getCreatedOn().getTime());
-//							}
-//							catch (RemoteException e)
-//							{
-//								MonitorLog.invoke(MonitorLog, new Object[] { LOGIDENT + getLogMethod + " error while downloading file : " + e.getMessage() });
-//								//throw new ApplicationException(Settings.i18n().tr("error while downloading file"),e);
-//							}
-//				    		catch (Exception e) {
-//				    			MonitorLog.invoke(MonitorLog, new Object[] { LOGIDENT + getLogMethod + " error while downloading file : " + e.getMessage() });
-//				    			//throw new ApplicationException(Settings.i18n().tr("error while downloading file"),e);
-//							}
-//			    		}
-//			    		}catch (NoSuchElementException nse) {
-//			    		}
-//			    	}
-//			    	
-//			    	WebElement elementNext = findElement(seleniumWebDriver, By.xpath("//span[@class='pager-navigator-next']//a"));//seleniumWebDriver.findElement(By.xpath("//span[@class='pager-navigator-next']//a"));
-//			    	if(elementNext != null) {
-//			    		hasNextPage = true;
-//			    		elementNext.click();
-//			    		SeleniumUtils.waitForJSandJQueryToLoad(seleniumWebDriver);
-//			    	} else {
-//			    		hasNextPage = false;
-//			    	}
-//		    	} while(hasNextPage);
-//		    } catch (Exception error) {
-//		    	isSelfException = true;
-//		    	throw new Exception("Auslesen der Ordner fehlgeschlagen: " + error.getMessage());
-//		    } 
-//		    
-////	    }
-//	    return true;
-//	    
-//	  }
-//	
 	public Document downloadDocument(WebElement elementFile, Account account, WebFolder folder, String localPath, WebDriver seleniumWebDriver, Class<?> externalLogger, Class<?> externalProgressMonitor, Class<?> externalDialogInterface) throws Exception {
 		Method LogInfo = externalLogger.getMethod("info", new Class[] { String.class });
 		Method LogWarn = externalLogger.getMethod("warn", new Class[] { String.class });
@@ -520,15 +322,7 @@ public class WebSyncDkb {
 
 				doc.store();
 
-				try
-				{
-					Application.getMessagingFactory().sendMessage(new ImportMessage(doc));
-				}
-				catch (Exception ex)
-				{
-					Logger.error("error while sending import message",ex);
-				}
-
+				SynchronizeDocuments.notifyDocumentListeners(doc);
 				return doc;
 			}
 			catch (RemoteException e)
