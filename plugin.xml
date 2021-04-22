@@ -3,7 +3,7 @@
 <plugin xmlns="http://www.willuhn.de/schema/jameica-plugin"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.willuhn.de/schema/jameica-plugin http://www.willuhn.de/schema/jameica-plugin-1.0.xsd"
-        name="hibiscus.docmanager" version="0.1.0" class="name.aiteanu.docmanager.DocManager">
+        name="hibiscus.docmanager" version="0.1.1" class="name.aiteanu.docmanager.DocManager">
 
   <description>DocManager Plugin for Jameica/Hibiscus</description>
   <url>https://faiteanu.github.io/hibiscus.docmanager/hibiscus.docmanager.zip</url>
@@ -67,7 +67,6 @@
     <item name="DocManager" icon-close="folder.png" icon-open="folder-open.png" action="name.aiteanu.docmanager.gui.action.ShowWelcome">
       <item name="Accounts" id="docmanager.navi.accounts" icon-close="system-file-manager.png" action="name.aiteanu.docmanager.gui.action.ListAccounts" />
       <item name="Documents" id="docmanager.navi.documents" icon-close="application-pdf.png" action="name.aiteanu.docmanager.gui.action.ListDocuments" />
-      <!--<item name="Projects" icon-close="text-x-generic.png" action="de.willuhn.jameica.example.gui.action.ProjectList" />-->
     </item>
   </navigation>
 

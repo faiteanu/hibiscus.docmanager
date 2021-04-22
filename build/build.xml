@@ -159,7 +159,7 @@
 	    </copy>-->
 		
 		<copy file="plugin.xml" todir="${project.zipdir}" />
-		<copy file="${build.dir}/COPYING" todir="${project.zipdir}" />
+		<copy file="COPYING" todir="${project.zipdir}" />
 
 		<!-- Jetzt muessen wir noch das ZIP-File erzeugen -->
 		<zip destfile="${project.release}/${define.zipfilename}">
