@@ -21,12 +21,12 @@ public class WebUtils {
 	    String logIdent = InstitutOptions.LOGIDENT;
 	    String longName = InstitutOptions.LONG_NAME;
 	    String errorMessage = null;
-	    if (responsePageAsString.contains("PIN ist falsch")) {
-	      errorMessage = "Benutzer-ID oder PIN ist falsch. Bitte überprüfen Sie die Konfiguration und Ihre Eingabe.";
-	      DialogError.invoke(DialogError, new Object[] { "Fehlermeldung der Deka:\n\n\n" + errorMessage, InstitutOptions.LOGO_PATH });
-	      errorMessage = StringCharUtils.shrinkString(errorMessage);
-	      throw new Exception(errorMessage);
-	    } 
+//	    if (responsePageAsString.contains("PIN ist falsch")) {
+//	      errorMessage = "Benutzer-ID oder PIN ist falsch. Bitte überprüfen Sie die Konfiguration und Ihre Eingabe.";
+//	      DialogError.invoke(DialogError, new Object[] { "Fehlermeldung der Deka:\n\n\n" + errorMessage, InstitutOptions.LOGO_PATH });
+//	      errorMessage = StringCharUtils.shrinkString(errorMessage);
+//	      throw new Exception(errorMessage);
+//	    } 
 //	    if (seleniumWebDriver.getCurrentUrl().contains("RequestPin.xhtml")) {
 //	      errorMessage = "Sie haben Ihr/e PIN/Passwort vergessen und ksich nicht mehr im Banking anmelden? Geben Sie hier Ihren Anmeldenamen an und beantworten die Verifizierungsfragen.\n\nUnter der Website\nhttps://www.dkb.de/Welcome/content/RequestPin.xhtml\nkSie ein neues Passwort anfordern.\n\nDurch das Absenden des Auftrags wird Ihr Zugang zum Banking sofort gesperrt und ein Start-Passwort zur einmaligen Anmeldung generiert.";
 //	      DialogError.invoke(DialogError, new Object[] { "Hinweis-Frage der Deutsche Kreditbank AG (VISA):\n\n\nPasswort vergessen\n\n" + errorMessage, "institutlogo-dkbvisa.png" });
@@ -52,6 +52,21 @@ public class WebUtils {
 //	    } catch (Exception error) {
 //	      throw new Exception(error.getMessage());
 //	    } 
+
+	}
+	
+	public static void checkLoginWasSuccessful(String responsePageAsString, WebDriver seleniumWebDriver,
+			Class<?> externalLogger, Class<?> externalProgressMonitor, Class<?> externalDialogInterface) throws Exception {
+		Method DialogError = externalDialogInterface.getMethod("error", new Class[] { String.class, String.class });
+	    String logIdent = InstitutOptions.LOGIDENT;
+	    String longName = InstitutOptions.LONG_NAME;
+	    String errorMessage = null;
+	    if (seleniumWebDriver.getCurrentUrl().equalsIgnoreCase(InstitutOptions.LOGIN_URL)) { // responsePageAsString.contains("PIN ist falsch")) {
+	      errorMessage = "Benutzer-ID oder PIN ist falsch. Bitte überprüfen Sie die Konfiguration und Ihre Eingabe.";
+	      DialogError.invoke(DialogError, new Object[] { "Fehlermeldung der Deka:\n\n\n" + errorMessage, InstitutOptions.LOGO_PATH });
+	      errorMessage = StringCharUtils.shrinkString(errorMessage);
+	      throw new Exception(errorMessage);
+	    } 
 
 	}
 

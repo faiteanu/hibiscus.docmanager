@@ -82,7 +82,7 @@ public class WebAuth {
 			} 
 			String pageAfterLoginResponse = seleniumWebDriver.getPageSource();
 			try {
-				WebUtils.checkSeleniumResponseHasError(pageAfterLoginResponse, seleniumWebDriver, externalLogger, externalProgressMonitor, externalDialogInterface);
+				WebUtils.checkLoginWasSuccessful(pageAfterLoginResponse, seleniumWebDriver, externalLogger, externalProgressMonitor, externalDialogInterface);
 			} catch (Exception error) {
 				isSelfException = true;
 				throw new Exception(error.getMessage());
