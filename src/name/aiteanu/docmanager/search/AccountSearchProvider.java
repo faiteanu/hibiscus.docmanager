@@ -39,7 +39,7 @@ public class AccountSearchProvider implements SearchProvider
 		accounts.addFilter("lower(institute) like ? or lower(username) like ? or lower(comment) like ?",new Object[]{s,s,s});
 		while (accounts.hasNext())
 		{
-			result.add(new MyResult(accounts.next()));
+			result.add(new AccountSearchResult(accounts.next()));
 		}
 		return result;
 	}
@@ -47,7 +47,7 @@ public class AccountSearchProvider implements SearchProvider
 	/**
 	 * Our implementation of the search result items.
 	 */
-	public class MyResult implements Result
+	public class AccountSearchResult implements Result
 	{
 		private Account account = null;
 
@@ -55,7 +55,7 @@ public class AccountSearchProvider implements SearchProvider
 		 * ct.
 		 * @param account
 		 */
-		private MyResult(Account account)
+		private AccountSearchResult(Account account)
 		{
 			this.account = account;
 		}

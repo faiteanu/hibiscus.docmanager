@@ -1,6 +1,6 @@
 package name.aiteanu.docmanager.institute.deka;
 
-public class InstitutOptions {
+public class InstituteOptionsDeka {
 	public static final String SHORT_NAME = "Deka";
 	public static final String LONG_NAME = "DekaBank (Dokumente)";
 	public static final String LOGIDENT = "[DocManager:Deka] ";

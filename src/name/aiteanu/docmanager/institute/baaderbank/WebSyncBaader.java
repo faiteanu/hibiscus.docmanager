@@ -1,4 +1,4 @@
-package name.aiteanu.docmanager.institute.deka;
+package name.aiteanu.docmanager.institute.baaderbank;
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -7,6 +7,7 @@ import java.rmi.RemoteException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
@@ -37,17 +38,17 @@ import name.aiteanu.docmanager.rmi.Account;
 import name.aiteanu.docmanager.rmi.Document;
 import name.aiteanu.docmanager.synchronize.SynchronizeDocuments;
 
-public class WebSyncDeka {
+public class WebSyncBaader {
 
 	private static WebDriver seleniumWebDriver = null;
 
 
 	public String getShortName() {
-		return "Deka Doks";
+		return "Baader Bank Doks";
 	}
 
 	public String getLongName() {
-		return "DekaBank (Dokumente)";
+		return "Baader Bank (Dokumente)";
 	}
 
 	public void synchronizeDocuments(Account account, ProgressMonitor monitor) throws ApplicationException {
@@ -75,7 +76,7 @@ public class WebSyncDeka {
 			String appHttpsProxyHost = Application.getConfig().getHttpsProxyHost();
 			int appHttpsProxyPort = Application.getConfig().getHttpsProxyPort();
 			try {
-				boolean headless = true; // TODO before checkin
+				boolean headless = false; // TODO before checkin
 				String osname = System.getProperty("os.name");
 				String osarch = System.getProperty("os.arch");
 				if (osname.contains("Linux") && osarch.contains("386")) {
@@ -94,16 +95,16 @@ public class WebSyncDeka {
 				throw new Exception("SeleniumWebDriverInit fehlerhaft: " + webClientError.getMessage());
 			}
 			seleniumWebDriver = Auth.seleniumLogin(account.getUserName(), monitor, seleniumWebDriver, getShortName(),
-					InstituteOptionsDeka.LOGO_PATH, InstituteOptionsDeka.LOGIN_URL, WebAuth.class, "",
-					InstituteOptionsDeka.MIN_PASS_LENGTH, InstituteOptionsDeka.MAX_PASS_LENGTH);
+					InstituteOptionsBaader.LOGO_PATH, InstituteOptionsBaader.LOGIN_URL, WebAuth.class, "",
+					InstituteOptionsBaader.MIN_PASS_LENGTH, InstituteOptionsBaader.MAX_PASS_LENGTH);
 			Logger.info(getShortName() + "-Login war erfolgreich");
 			monitor.log(getShortName() + "-Login war erfolgreich");
 			successfulLogin = true;
 			monitor.setPercentComplete(30);
 			String logUserString = account.getUserName().substring(0, 4) + "*******";
-			Logger.info("INFO: es werden nun gleich alle aktiven Deka-Konten zur Anmeldekennung '" + logUserString
+			Logger.info("INFO: es werden nun gleich alle aktiven Baader Bank-Konten zur Anmeldekennung '" + logUserString
 					+ "' abgearbeitet ...");
-			monitor.log("INFO: es werden nun gleich alle aktiven Deka-Konten zur Anmeldekennung '" + logUserString
+			monitor.log("INFO: es werden nun gleich alle aktiven Baader-Konten zur Anmeldekennung '" + logUserString
 					+ "' abgearbeitet ...");
 
 
@@ -160,13 +161,11 @@ public class WebSyncDeka {
 
 		SeleniumDownloadHelper downloader = new SeleniumDownloadHelper(seleniumWebDriver);
 
-		LogInfo.invoke(LogInfo, new Object[] { InstituteOptionsDeka.LOGIDENT + getLogMethod + "Gewählte Ordner durchgehen ..." });
+		LogInfo.invoke(LogInfo, new Object[] { InstituteOptionsBaader.LOGIDENT + getLogMethod + "Gewählte Ordner durchgehen ..." });
 		try {
-			seleniumWebDriver.get(InstituteOptionsDeka.MAILBOX_URL);
-			String LOADER_PATH = "//div[@class='ajax_loading' and @stlye='']"; // WebUtils.LOADER_PATH
-			String LOADER_TEXT = "DummyLoaderText"; // WebUtils.LOADER_TEXT
-			SeleniumUtils.waitForPageLoading(seleniumWebDriver, LOADER_PATH, LOADER_TEXT, true, externalLogger);
-			LogInfo.invoke(LogInfo, new Object[] { InstituteOptionsDeka.LOGIDENT + getLogMethod + " Ordner: " + InstituteOptionsDeka.MAILBOX_URL });
+			WebElement downloads = findElement(seleniumWebDriver, By.xpath("//div[@class='navigation']//a[.='Download']"));
+			downloads.click();
+			LogInfo.invoke(LogInfo, new Object[] { InstituteOptionsBaader.LOGIDENT + getLogMethod + " Ordner: " + InstituteOptionsBaader.MAILBOX_URL });
 		} catch (Exception error) {
 			isSelfException = true;
 			throw new Exception("WebDriver-Fehler: " + ExceptionUtils.getStackTrace(error));
@@ -177,105 +176,117 @@ public class WebSyncDeka {
 					externalProgressMonitor, externalDialogInterface);
 		} catch (Exception error) {
 			isSelfException = true;
-			throw new Exception("Fehler auf der Konto" + error.getMessage());
+			throw new Exception("Fehler auf der Download-Seite: " + error.getMessage());
 		}
 
 		// Find documents in folder
 		try {
-//		    	boolean hasNextPage = false;
-
 			DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+			DBIterator<Document> existingDocs = Settings.getDBService().createList(Document.class);
+			existingDocs.addFilter("accountid = ?", account.getID());
+			HashSet<String> existingIds = new HashSet<>();
+			while (existingDocs.hasNext()) {
+				Document doc = existingDocs.next();
+				existingIds.add(doc.getRemoteID());
+			}
 
-//		    	do{
-			WebElement mailboxFrame = findElement(seleniumWebDriver, By.xpath("//iframe[@id='depot']"));
-			seleniumWebDriver.switchTo().frame(mailboxFrame);
-			List<WebElement> elements = seleniumWebDriver
-					.findElements(By.xpath("//form[@name='MailboxDocs']//tbody/tr"));
-			LogTrace.invoke(LogTrace, new Object[] { InstituteOptionsDeka.LOGIDENT + getLogMethod + " Folders: " + elements.size() });
+			List<WebElement> folders = seleniumWebDriver.findElements(By.cssSelector("div.accordion"));
+			LogTrace.invoke(LogTrace, new Object[] { InstituteOptionsBaader.LOGIDENT + getLogMethod + " Folders: " + folders.size() });
 
-			for (WebElement el : elements) {
+			for (WebElement folder : folders) {
 				try {
-					WebElement created = findElement(el, By.cssSelector(":nth-child(2)"));
-					// WebElement title = findElement(el, By.cssSelector(":nth-child(5)"));
-					WebElement link = findElement(el, By.cssSelector(":nth-child(5) a"));
-					Date createdOn = (created != null ? df.parse(created.getText()) : new Date());
-					String titleStr = link.getText();
-					String url = link.getAttribute("href");
-
-					DBIterator<Document> existingDocs = Settings.getDBService().createList(Document.class);
-					existingDocs.addFilter("accountid = ?", account.getID());
-					existingDocs.addFilter("createdon = ?", createdOn);
-					existingDocs.addFilter("title = ?", titleStr);
-					if (!existingDocs.hasNext()) { // only add document which did not exist in the DB
-						try {
-							// create new document
-							Document doc =  (Document) Settings.getDBService().createObject(Document.class, null);
-							doc.setAccount(account);
-							doc.setRemoteFolder("Postfach");
-							doc.setTitle(titleStr);
-							doc.setCreatedOn(createdOn);
-
-							try { // download file and set metadata
-								FileData fd = downloader.getFileFromUrlRaw(new URL(url));
-								String fileName = fd.getGuessedFilename().replaceAll("[\\\\/:*?\"<>|]", "_");
-								if(fileName.contains("documentId")) {
-									fileName = fileName.substring(fileName.indexOf("documentId=") + 11) + ".pdf";
+					WebElement folderName = findElement(folder, By.cssSelector(".fl"));
+					
+					List<WebElement> rows = folder.findElements(By.cssSelector("div.accordionContent tbody tr "));
+					
+					for(WebElement el : rows) {
+						WebElement link = findElement(el, By.cssSelector(":nth-child(5) a"));
+						String url = link.getAttribute("href");
+						String remoteId = getQueryParam(url, "bfId");
+						if (!existingIds.contains(remoteId)) { // only add document which did not exist in the DB
+							WebElement created = findElement(el, By.cssSelector(":nth-child(1)"));
+							WebElement title = findElement(el, By.cssSelector(":nth-child(4)"));
+							String titleStr = title.getAttribute("innerHTML");
+		
+	//						DBIterator<Document> existingDocs = Settings.getDBService().createList(Document.class);
+	//						existingDocs.addFilter("accountid = ?", account.getID());
+	//						existingDocs.addFilter("createdon = ?", createdOn);
+	//						existingDocs.addFilter("title = ?", titleStr);
+							try {
+								Date createdOn = (created != null ? df.parse(created.getAttribute("innerHTML")) : new Date());
+								// create new document
+								Document doc =  (Document) Settings.getDBService().createObject(Document.class, null);
+								doc.setAccount(account);
+								doc.setRemoteFolder(folderName.getText());
+								doc.setRemoteID(remoteId);
+								doc.setTitle(titleStr);
+								doc.setCreatedOn(createdOn);
+	
+								try { // download file and set metadata
+									FileData fd = downloader.getFileFromUrlRaw(new URL(url));
+									String fileName = fd.getGuessedFilename().replaceAll("[\\\\/:*?\"<>|]", "_");
+									File output = new File(account.getDocumentsPath() + File.separator + folderName.getText() + File.separator + fileName);
+									doc.setLocalFolder(output.getParent());
+									doc.setFilename(fileName);
+									doc.setDownloadedOn(new Date());
+	
+									LogInfo.invoke(LogInfo, new Object[] { InstituteOptionsBaader.LOGIDENT + getLogMethod + " Storing : " + output.getAbsolutePath() });
+									FileUtils.writeByteArrayToFile(output, fd.getData());
+									output.setLastModified(doc.getCreatedOn().getTime());
+	
+								} catch (Exception ex) {
+									MonitorLog.invoke(MonitorLog, new Object[] { InstituteOptionsBaader.LOGIDENT + getLogMethod + " error while downloading file : " + ex.getMessage() });
+									doc.setComment("Datei konnte nicht von der Baader-Webseite geladen werden. " + ex.getMessage());
 								}
-								File output = new File(account.getDocumentsPath(), fileName);
-								doc.setLocalFolder(output.getParent());
-								doc.setFilename(fileName);
-								doc.setDownloadedOn(new Date());
-
-								LogInfo.invoke(LogInfo, new Object[] { InstituteOptionsDeka.LOGIDENT + getLogMethod + " Storing : " + output.getAbsolutePath() });
-								FileUtils.writeByteArrayToFile(output, fd.getData());
-								output.setLastModified(doc.getCreatedOn().getTime());
-
-							} catch (Exception ex) {
-								MonitorLog.invoke(MonitorLog, new Object[] { InstituteOptionsDeka.LOGIDENT + getLogMethod + " error while downloading file : " + ex.getMessage() });
-								doc.setComment("Datei konnte nicht von der Deka-Webseite geladen werden. " + ex.getMessage());
+	
+								doc.store();
+	
+								SynchronizeDocuments.notifyDocumentListeners(doc);
+																		
+							} catch (RemoteException e) {
+								MonitorLog.invoke(MonitorLog, new Object[] {
+										InstituteOptionsBaader.LOGIDENT + getLogMethod + " error while downloading file : " + e.getMessage() });
+								// throw new ApplicationException(Settings.i18n().tr("error while downloading
+								// file"),e);
+							} catch (Exception e) {
+								MonitorLog.invoke(MonitorLog, new Object[] {
+										InstituteOptionsBaader.LOGIDENT + getLogMethod + " error while downloading file : " + e.getMessage() });
+								// throw new ApplicationException(Settings.i18n().tr("error while downloading
+								// file"),e);
 							}
-
-							doc.store();
-
-							SynchronizeDocuments.notifyDocumentListeners(doc);
-																	
-						} catch (RemoteException e) {
-							MonitorLog.invoke(MonitorLog, new Object[] {
-									InstituteOptionsDeka.LOGIDENT + getLogMethod + " error while downloading file : " + e.getMessage() });
-							// throw new ApplicationException(Settings.i18n().tr("error while downloading
-							// file"),e);
-						} catch (Exception e) {
-							MonitorLog.invoke(MonitorLog, new Object[] {
-									InstituteOptionsDeka.LOGIDENT + getLogMethod + " error while downloading file : " + e.getMessage() });
-							// throw new ApplicationException(Settings.i18n().tr("error while downloading
-							// file"),e);
+						} else {
+//							LogInfo.invoke(LogInfo, new Object[] {
+//									InstituteOptionsBaader.LOGIDENT + getLogMethod + " Document already downloaded : " + created.getText() + " " +  titleStr});
+							LogInfo.invoke(LogInfo, new Object[] {
+									InstituteOptionsBaader.LOGIDENT + getLogMethod + " Document already downloaded : " + remoteId});
 						}
-					} else {
-						LogInfo.invoke(LogInfo, new Object[] {
-								InstituteOptionsDeka.LOGIDENT + getLogMethod + " Document already downloaded : " + created.getText() + " " +  titleStr});
 					}
 				} catch (NoSuchElementException nse) {
 				}
 			}
 
-//			    	WebElement elementNext = findElement(seleniumWebDriver, By.xpath("//span[@class='pager-navigator-next']//a"));//seleniumWebDriver.findElement(By.xpath("//span[@class='pager-navigator-next']//a"));
-//			    	if(elementNext != null) {
-//			    		hasNextPage = true;
-//			    		elementNext.click();
-//			    		SeleniumUtils.waitForJSandJQueryToLoad(seleniumWebDriver);
-//			    	} else {
-//			    		hasNextPage = false;
-//			    	}
-//		    	} while(hasNextPage);
+
 		} catch (Exception error) {
 			isSelfException = true;
 			throw new Exception("Auslesen der Ordner fehlgeschlagen: " + error.getMessage());
-		} finally {
-			seleniumWebDriver.switchTo().defaultContent();
-		}
+		} 
 
 		return true;
 
+	}
+
+	private String getQueryParam(String url, String paramName) {
+		int queryStart = url.indexOf("?");
+		if (queryStart > 0) {
+			String query = url.substring(queryStart + 1);
+			String[] params = query.split("&");
+			for (String param : params) {
+				if (param.startsWith(paramName)) {
+					return param.split("=")[1];
+				}
+			}
+		}
+		return null;
 	}
 
 	public static WebElement findElement(WebDriver webDriver, By condition) {

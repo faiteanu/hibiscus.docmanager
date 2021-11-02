@@ -24,6 +24,7 @@ import de.willuhn.logging.Logger;
 import de.willuhn.sql.version.UpdateProvider;
 import de.willuhn.util.ApplicationException;
 import de.willuhn.util.ProgressMonitor;
+import name.aiteanu.docmanager.DocManager;
 
 /**
  * Implementierung eines Update-Providers fuer Hibiscus.
@@ -45,7 +46,7 @@ public class DocUpdateProvider implements UpdateProvider
     this.conn    = conn;
     this.version = version;
     
-    AbstractPlugin p = Application.getPluginLoader().getPlugin(HBCI.class);
+    AbstractPlugin p = Application.getPluginLoader().getPlugin(DocManager.class);
     this.manifest    = p.getManifest();
     this.res         = p.getResources();
   }

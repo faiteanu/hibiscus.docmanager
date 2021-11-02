@@ -1,4 +1,4 @@
-package name.aiteanu.docmanager.institute.deka;
+package name.aiteanu.docmanager.institute.baaderbank;
 
 import java.lang.reflect.Method;
 
@@ -18,8 +18,8 @@ public class WebUtils {
 	public static void checkSeleniumResponseHasError(String responsePageAsString, WebDriver seleniumWebDriver,
 			Class<?> externalLogger, Class<?> externalProgressMonitor, Class<?> externalDialogInterface) throws Exception {
 		Method DialogError = externalDialogInterface.getMethod("error", new Class[] { String.class, String.class });
-	    String logIdent = InstituteOptionsDeka.LOGIDENT;
-	    String longName = InstituteOptionsDeka.LONG_NAME;
+	    String logIdent = InstituteOptionsBaader.LOGIDENT;
+	    String longName = InstituteOptionsBaader.LONG_NAME;
 	    String errorMessage = null;
 //	    if (responsePageAsString.contains("PIN ist falsch")) {
 //	      errorMessage = "Benutzer-ID oder PIN ist falsch. Bitte überprüfen Sie die Konfiguration und Ihre Eingabe.";
@@ -39,12 +39,12 @@ public class WebUtils {
 //	      errorMessage = StringCharUtils.shrinkString(errorMessage);
 //	      throw new Exception(errorMessage);
 //	    } 
-//	    if (responsePageAsString.contains("id=\"wartungsSeite\"") && responsePageAsString.contains("Geplante Wartungsarbeiten")) {
-//	      errorMessage = "Geplante Wartungsarbeiten\n\nManchmal muss man auch in der digitalen Welt manuell Hand anlegen.\n\nDie Webseite steht aufgrund von Wartungsarbeiten aktuell nicht zur VerfWir bitten um Ihr Verst;
-//	      DialogError.invoke(DialogError, new Object[] { "Fehlermeldung der Deutsche Kreditbank AG (VISA):\n\n\n" + errorMessage, "institutlogo-dkbvisa.png" });
-//	      errorMessage = StringCharUtils.shrinkString(errorMessage);
-//	      throw new Exception(errorMessage);
-//	    } 
+	    if (responsePageAsString.contains("Die Webseite ist derzeit nicht erreichbar")) {
+	      errorMessage = "Geplante Wartungsarbeiten\n\nManchmal muss man auch in der digitalen Welt manuell Hand anlegen.\n\nDie Webseite steht aufgrund von Wartungsarbeiten aktuell nicht zur Verfügung.";
+	      DialogError.invoke(DialogError, new Object[] { "Fehlermeldung der " + InstituteOptionsBaader.SHORT_NAME + ":\n\n\n" + errorMessage, InstituteOptionsBaader.LOGO_PATH });
+	      errorMessage = StringCharUtils.shrinkString(errorMessage);
+	      throw new Exception(errorMessage);
+	    } 
 //	    try {
 //	      setSerchStrings();
 //	      setSerchExclusionStrings();
@@ -58,12 +58,12 @@ public class WebUtils {
 	public static void checkLoginWasSuccessful(String responsePageAsString, WebDriver seleniumWebDriver,
 			Class<?> externalLogger, Class<?> externalProgressMonitor, Class<?> externalDialogInterface) throws Exception {
 		Method DialogError = externalDialogInterface.getMethod("error", new Class[] { String.class, String.class });
-	    String logIdent = InstituteOptionsDeka.LOGIDENT;
-	    String longName = InstituteOptionsDeka.LONG_NAME;
+	    String logIdent = InstituteOptionsBaader.LOGIDENT;
+	    String longName = InstituteOptionsBaader.LONG_NAME;
 	    String errorMessage = null;
-	    if (seleniumWebDriver.getCurrentUrl().equalsIgnoreCase(InstituteOptionsDeka.LOGIN_URL)) { // responsePageAsString.contains("PIN ist falsch")) {
+	    if (responsePageAsString.contains("Dialog abgebrochen")) {
 	      errorMessage = "Benutzer-ID oder PIN ist falsch. Bitte überprüfen Sie die Konfiguration und Ihre Eingabe.";
-	      DialogError.invoke(DialogError, new Object[] { "Fehlermeldung der Deka:\n\n\n" + errorMessage, InstituteOptionsDeka.LOGO_PATH });
+	      DialogError.invoke(DialogError, new Object[] { "Fehlermeldung der " + InstituteOptionsBaader.SHORT_NAME + ":\n\n\n" + errorMessage, InstituteOptionsBaader.LOGO_PATH });
 	      errorMessage = StringCharUtils.shrinkString(errorMessage);
 	      throw new Exception(errorMessage);
 	    } 

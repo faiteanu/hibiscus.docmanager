@@ -69,7 +69,7 @@ public class DocDBServiceImpl extends HBCIDBServiceImpl
   public String getName() throws RemoteException
   {
 	  I18N i18n = Application.getPluginLoader().getPlugin(DocManager.class).getResources().getI18N();
-	  return i18n.tr("Datenbank-Service fÃ¼r DocManager");
+	  return i18n.tr("Datenbank-Service für DocManager");
   }
 
   /**
@@ -121,8 +121,14 @@ public class DocDBServiceImpl extends HBCIDBServiceImpl
     Version version = null;
     try
     {
-      version = VersionUtil.getVersion(this,"db");
-      Logger.info("current database version: " + version.getVersion());
+    	HBCIDBServiceImpl db = null;
+    	try {
+			db = (HBCIDBServiceImpl) Application.getServiceFactory().lookup(HBCI.class,"database");
+		} catch (Exception e) {
+		}
+    	version = VersionUtil.getVersion(db, "docmanager.db");
+      //version = VersionUtil.getVersion(this,"docmanager.db");
+      Logger.info("current DocManager database version: " + version.getVersion());
     }
     catch (RemoteException re)
     {
@@ -139,7 +145,7 @@ public class DocDBServiceImpl extends HBCIDBServiceImpl
         this.install();
         
         // Jetzt sollte sich die Version laden lassen
-        version = VersionUtil.getVersion(this,"db");
+        version = VersionUtil.getVersion(this,"docmanager.db");
         Logger.info("current database version: " + version.getVersion());
       }
       catch (RemoteException re2)
@@ -153,7 +159,7 @@ public class DocDBServiceImpl extends HBCIDBServiceImpl
     try
     {
       Logger.info("init update provider");
-      UpdateProvider provider = new DocUpdateProvider(getConnection(),version);
+      UpdateProvider provider = new DocUpdateProvider(getConnection(), version);
       Updater updater = new Updater(provider,"iso-8859-1");
       updater.execute();
       Logger.info("updates finished");

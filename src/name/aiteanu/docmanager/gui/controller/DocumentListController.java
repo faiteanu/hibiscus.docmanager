@@ -88,7 +88,7 @@ public class DocumentListController extends AbstractControl
 	}
 
 	/**
-	 * Returns the input field for the project name.
+	 * Returns the input field for the account name.
 	 * @return input field.
 	 * @throws RemoteException
 	 */
@@ -191,8 +191,10 @@ public class DocumentListController extends AbstractControl
 			public void format(TableItem item) {
 				try {
 					Document doc = (Document)item.getData();
-					if(doc.getFilename().endsWith(".pdf")) {
+					if(doc.getFilename().toLowerCase().endsWith(".pdf")) {
 						item.setImage(2, SWTUtil.getImage("application-pdf.png"));
+					} else if(doc.getFilename().toLowerCase().endsWith(".csv")) {
+						item.setImage(2, SWTUtil.getImage("application-csv.png"));
 					}
 					item.setFont(doc.getReadOn() == null ? Font.BOLD.getSWTFont() : Font.DEFAULT.getSWTFont());
 				} catch (RemoteException e) {

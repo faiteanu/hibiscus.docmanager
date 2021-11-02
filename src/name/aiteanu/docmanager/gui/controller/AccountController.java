@@ -26,6 +26,8 @@ import name.aiteanu.docmanager.DocManager;
 import name.aiteanu.docmanager.MetaKey;
 import name.aiteanu.docmanager.Settings;
 import name.aiteanu.docmanager.gui.action.OpenAccountDetail;
+import name.aiteanu.docmanager.institute.baaderbank.InstituteOptionsBaader;
+import name.aiteanu.docmanager.institute.deka.InstituteOptionsDeka;
 import name.aiteanu.docmanager.rmi.Account;
 
 
@@ -69,7 +71,7 @@ public class AccountController extends AbstractControl
 	}
 
 	/**
-	 * Returns the input field for the project name.
+	 * Returns the input field for the institute name.
 	 * @return input field.
 	 * @throws RemoteException
 	 */
@@ -79,8 +81,9 @@ public class AccountController extends AbstractControl
 			return institute;
 		
 	    List<String> institutes = new LinkedList<String>();
+	    institutes.add(InstituteOptionsBaader.SHORT_NAME);
 	    institutes.add("DKB");
-	    institutes.add("Deka");
+	    institutes.add(InstituteOptionsDeka.SHORT_NAME);
 	    //groups.add(""); // <Keine Kategorie>
 	    //groups.addAll(KontoUtil.getGroups());
 
@@ -345,7 +348,7 @@ public class AccountController extends AbstractControl
     }
     catch (RemoteException e)
     {
-      Logger.error("error while storing project",e);
+      Logger.error("error while storing account",e);
       Application.getMessagingFactory().sendMessage(new StatusBarMessage(Settings.i18n().tr("Error while storing Account: {0}",e.getMessage()),StatusBarMessage.TYPE_ERROR));
     }
   }

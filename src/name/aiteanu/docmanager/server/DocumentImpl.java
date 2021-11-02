@@ -102,6 +102,16 @@ public class DocumentImpl extends AbstractDBObject implements Document {
 	public void setRemoteFolder(String remotefolder) throws RemoteException {
 		setAttribute("remotefolder", remotefolder);
 	}
+	
+	@Override
+	public String getRemoteID() throws RemoteException {
+		return (String) getAttribute("remoteid");
+	}
+
+	@Override
+	public void setRemoteID(String remoteId) throws RemoteException {
+		setAttribute("remoteid", remoteId);
+	}
 
 	@Override
 	public String getTitle() throws RemoteException {
@@ -172,4 +182,5 @@ public class DocumentImpl extends AbstractDBObject implements Document {
 	public void setReadOn(Date readon) throws RemoteException {
 		setAttribute("readon", readon);
 	}
+
 }

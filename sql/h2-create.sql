@@ -14,6 +14,7 @@ CREATE TABLE DOCMANAGER_DOCUMENT (
   ID IDENTITY(1),
   AccountID int(4) NOT NULL,
   RemoteFolder varchar(255) NULL,
+  RemoteID varchar(255) NULL,
   Title varchar(255) NOT NULL,
   LocalFolder varchar(255) NULL,
   Filename varchar(255) NULL,

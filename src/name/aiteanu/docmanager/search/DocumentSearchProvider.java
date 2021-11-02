@@ -40,7 +40,7 @@ public class DocumentSearchProvider implements SearchProvider
 		documents.addFilter("lower(remotefolder) like ? or lower(title) like ? or lower(comment) like ?",new Object[]{s,s,s});
 		while (documents.hasNext())
 		{
-			result.add(new MyResult(documents.next()));
+			result.add(new DocumentSearchResult(documents.next()));
 		}
 		return result;
 	}
@@ -48,7 +48,7 @@ public class DocumentSearchProvider implements SearchProvider
 	/**
 	 * Our implementation of the search result items.
 	 */
-	public class MyResult implements Result
+	public class DocumentSearchResult implements Result
 	{
 		private Document document = null;
 
@@ -56,7 +56,7 @@ public class DocumentSearchProvider implements SearchProvider
 		 * ct.
 		 * @param task
 		 */
-		private MyResult(Document task)
+		private DocumentSearchResult(Document task)
 		{
 			this.document = task;
 		}

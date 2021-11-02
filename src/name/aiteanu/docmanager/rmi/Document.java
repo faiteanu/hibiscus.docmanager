@@ -8,13 +8,14 @@ import de.willuhn.datasource.rmi.DBObject;
 
 /**
  * Interface of the business object for documents.
- * According to the SQL table, we define some getter an setter here.
+ * According to the SQL table, we define some getter and setter here.
  * <pre>
  * CREATE TABLE DOCMANAGER_DOCUMENT (
  * --id NUMERIC default UNIQUEKEY('DOCMANAGER_DOCUMENT'),
  * ID IDENTITY(1),
  * AccountID int(4) NOT NULL,
  * RemoteFolder varchar(255) NULL,
+ * RemoteID varchar(255) NULL,
  * Title varchar(255) NOT NULL,
  * LocalFolder varchar(255) NULL,
  * Filename varchar(255) NULL,
@@ -37,6 +38,8 @@ public interface Document extends DBObject
 	public void setAccount(Account account) throws RemoteException;
 	public String getRemoteFolder() throws RemoteException;
 	public void setRemoteFolder(String name) throws RemoteException;
+	public String getRemoteID() throws RemoteException;
+	public void setRemoteID(String name) throws RemoteException;
 	public String getTitle() throws RemoteException;
 	public void setTitle(String name) throws RemoteException;
 	public String getLocalFolder() throws RemoteException;

@@ -223,7 +223,7 @@ public class WebSyncDkb {
 		    	for(WebElement el : elements) {
 		    		//WebElement title = findElement(el, By.cssSelector(".abaxx-aspect-subject")); // in Unterordnern
 		    		//if(title == null) {
-		    		//	title = findElement(el, By.cssSelector(".subject")); // direkt im Postfach hei√üt das Element anders
+		    		//	title = findElement(el, By.cssSelector(".subject")); // direkt im Postfach heiﬂt das Element anders
 		    		//}
 		    		WebElement linkFolder = findElement(el, By.cssSelector(".evt-gotoFolder"));
 
@@ -314,7 +314,8 @@ public class WebSyncDkb {
 					LogInfo.invoke(LogInfo, new Object[] { LOGIDENT + getLogMethod + " Storing : " + output.getAbsolutePath() });
 					FileUtils.writeByteArrayToFile(output, fd.getData());
 					output.setLastModified(doc.getCreatedOn().getTime());
-
+					MonitorLog.invoke(MonitorLog, new Object[] { LOGIDENT + getLogMethod + " Storing : " + output.getAbsolutePath() });
+					
 				} catch (Exception ex) {
 					MonitorLog.invoke(MonitorLog, new Object[] { LOGIDENT + getLogMethod + " error while downloading file : " + ex.getMessage() });
 					doc.setComment("Datei konnte nicht von der DKB-Webseite geladen werden. " + ex.getMessage());

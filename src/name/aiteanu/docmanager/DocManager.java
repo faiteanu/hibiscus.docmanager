@@ -1,10 +1,16 @@
 package name.aiteanu.docmanager;
 
+import java.rmi.RemoteException;
+
+import de.willuhn.datasource.rmi.DBIterator;
+import de.willuhn.datasource.rmi.DBService;
+import de.willuhn.jameica.gui.GUI;
 import de.willuhn.jameica.plugin.AbstractPlugin;
 import de.willuhn.jameica.plugin.Version;
 import de.willuhn.jameica.system.Application;
 import de.willuhn.logging.Logger;
 import de.willuhn.util.ApplicationException;
+import name.aiteanu.docmanager.rmi.Document;
 import name.aiteanu.docmanager.server.DocDBServiceImpl;
 
 /**
@@ -26,6 +32,20 @@ public class DocManager extends AbstractPlugin
 	public void init() throws ApplicationException
 	{
 		super.init();
+		
+		checkDatabase();
+		
+//		DBService service;
+//		try {
+//			service = Settings.getDBService();
+//			DBIterator<Document> documents = service.createList(Document.class);
+//			documents.addFilter("readon is null");
+//			int count = documents.size();
+//			GUI.getNavigation().setUnreadCount("docmanager.navi.documents", count);
+//		} catch (RemoteException e) {
+//			Logger.error("unable to access database", e);
+//			throw new ApplicationException("error while initializing plugin", e);
+//		}
 	}
 
 	/**
@@ -86,5 +106,28 @@ public class DocManager extends AbstractPlugin
 	public void shutDown()
 	{
 		super.shutDown();
+	}
+	
+	private void checkDatabase() throws ApplicationException {
+		// If we are running in client/server mode and this instance
+		// is the client, we do not need to create a database.
+		// Instead of this we will get our objects via RMI from
+		// the server
+		if (Application.inClientMode())
+			return;
+		Logger.info("creating database tables");
+		try {
+			DocDBServiceImpl service = new DocDBServiceImpl();
+			service.start();
+			service.checkConsistency();
+			//service.install();
+			service.stop(false);
+			// That's all. Database installed and tables created ;)
+		}
+		catch (Exception e)
+		{
+			Logger.error("unable to create database",e);
+			throw new ApplicationException("error while installing plugin",e);
+		}	
 	}
 }

@@ -53,7 +53,7 @@ public class DeleteDocument implements Action {
 			}
 			// Send Status update message
 			Application.getMessagingFactory().sendMessage(new StatusBarMessage(
-					Settings.i18n().tr("Document deleted successfully"), StatusBarMessage.TYPE_SUCCESS));
+					Settings.i18n().tr("Document deleted"), StatusBarMessage.TYPE_SUCCESS));
 		} catch (ApplicationException ae) {
 			throw ae;
 		} catch (Exception e) {

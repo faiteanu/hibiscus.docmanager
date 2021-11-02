@@ -1,4 +1,4 @@
-package name.aiteanu.docmanager.institute.deka;
+package name.aiteanu.docmanager.institute.baaderbank;
 
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
@@ -36,11 +36,11 @@ public class WebAuth {
 		WebDriverWait wait10 = new WebDriverWait(seleniumWebDriver, 10L);
 		WebDriverWait wait1 = new WebDriverWait(seleniumWebDriver, 1L);
 		try {
-			LogInfo.invoke(LogInfo, new Object[] { InstituteOptionsDeka.LOGIDENT + getLogMethod + InstituteOptionsDeka.SHORT_NAME + "-Login aufrufen ... (GET " + InstituteOptionsDeka.LOGIN_URL + ")" });
+			LogInfo.invoke(LogInfo, new Object[] { InstituteOptionsBaader.LOGIDENT + getLogMethod + InstituteOptionsBaader.SHORT_NAME + "-Login aufrufen ... (GET " + InstituteOptionsBaader.LOGIN_URL + ")" });
 			try {
-				seleniumWebDriver.get(InstituteOptionsDeka.LOGIN_URL);
+				seleniumWebDriver.get(InstituteOptionsBaader.LOGIN_URL);
 				SeleniumUtils.waitForJSandJQueryToLoad(seleniumWebDriver);
-				LogDebug.invoke(LogDebug, new Object[] { InstituteOptionsDeka.LOGIDENT + getLogMethod + "loginpage: current webdriver hash: " + seleniumWebDriver
+				LogDebug.invoke(LogDebug, new Object[] { InstituteOptionsBaader.LOGIDENT + getLogMethod + "loginpage: current webdriver hash: " + seleniumWebDriver
 						.getWindowHandle().hashCode() });
 			} catch (Exception error) {
 				isSelfException = true;
@@ -53,16 +53,16 @@ public class WebAuth {
 				isSelfException = true;
 				throw new Exception("Fehler auf der Login-Seite: " + error.getMessage());
 			} 
-			String cookieDetectPath = "//div[@class='mfp-content' and not(contains(@style,'display: none;'))]";
-			String cookieAcceptPath = "//button[contains(@class,'js-accept-selected-cookies')]";
-			SeleniumUtils.closeCookieLaw(seleniumWebDriver, InstituteOptionsDeka.LOGIDENT, InstituteOptionsDeka.LONG_NAME, InstituteOptionsDeka.LOGO_PATH, cookieDetectPath, cookieAcceptPath, WebUtils.LOADER_CATCHSTRING, WebUtils.LOADER_EXCLUSIONS, WebUtils.LOADER_PATH, WebUtils.LOADER_TEXT, externalLogger);
+//			String cookieDetectPath = "//div[@class='mfp-content' and not(contains(@style,'display: none;'))]";
+//			String cookieAcceptPath = "//button[contains(@class,'js-accept-selected-cookies')]";
+//			SeleniumUtils.closeCookieLaw(seleniumWebDriver, InstituteOptionsBaader.LOGIDENT, InstituteOptionsBaader.LONG_NAME, InstituteOptionsBaader.LOGO_PATH, cookieDetectPath, cookieAcceptPath, WebUtils.LOADER_CATCHSTRING, WebUtils.LOADER_EXCLUSIONS, WebUtils.LOADER_PATH, WebUtils.LOADER_TEXT, externalLogger);
 			try {
 				//wait.until((Function)ExpectedConditions.presenceOfElementLocated(By.cssSelector("aside input.js-username")));
-				wait.until((Function)ExpectedConditions.elementToBeClickable(By.cssSelector("aside input.js-username")));
-				WebElement inputUsername = seleniumWebDriver.findElement(By.cssSelector("aside input.js-username"));
-				LogDebug.invoke(LogDebug, new Object[] { InstituteOptionsDeka.LOGIDENT + getLogMethod + "inputUsername: " + inputUsername });
-				WebElement inputPasswd = seleniumWebDriver.findElement(By.cssSelector("aside input.js-password"));
-				LogDebug.invoke(LogDebug, new Object[] { InstituteOptionsDeka.LOGIDENT + getLogMethod + "inputPassword: " + inputPasswd });
+				wait.until((Function)ExpectedConditions.elementToBeClickable(By.cssSelector("input[name='authusername']")));
+				WebElement inputUsername = seleniumWebDriver.findElement(By.cssSelector("input[name='authusername']"));
+				LogDebug.invoke(LogDebug, new Object[] { InstituteOptionsBaader.LOGIDENT + getLogMethod + "inputUsername: " + inputUsername });
+				WebElement inputPasswd = seleniumWebDriver.findElement(By.cssSelector("input[name='authpassword']"));
+				LogDebug.invoke(LogDebug, new Object[] { InstituteOptionsBaader.LOGIDENT + getLogMethod + "inputPassword: " + inputPasswd });
 				inputUsername.click();
 				inputUsername.sendKeys(new CharSequence[] { responseLogin });
 				SeleniumUtils.waitForJSandJQueryToLoad(seleniumWebDriver);
@@ -75,7 +75,7 @@ public class WebAuth {
 						ExceptionUtils.getStackTrace(error));
 			} 
 			try {
-				SeleniumUtils.clickElementHandleErrors(seleniumWebDriver, "submitContinue", "//aside//button[@title='Anmelden']", WebUtils.LOADER_CATCHSTRING, WebUtils.LOADER_EXCLUSIONS, WebUtils.LOADER_PATH, WebUtils.LOADER_TEXT, true, externalLogger);
+				SeleniumUtils.clickElementHandleErrors(seleniumWebDriver, "submitContinue", "//input[@name='Login']", WebUtils.LOADER_CATCHSTRING, WebUtils.LOADER_EXCLUSIONS, WebUtils.LOADER_PATH, WebUtils.LOADER_TEXT, true, externalLogger);
 			} catch (Exception error) {
 				isSelfException = true;
 				throw new Exception("WebDriver-Fehler: " + ExceptionUtils.getStackTrace(error));
@@ -87,6 +87,40 @@ public class WebAuth {
 				isSelfException = true;
 				throw new Exception(error.getMessage());
 			} 
+			
+			// Überprüfe, ob TAN-Eingabe nötig ist
+			try {
+				seleniumWebDriver.findElement(By.xpath("//h1[contains(., 'TAN-Eingabe erforderlich)]"));
+				LogDebug.invoke(LogDebug, new Object[] { InstituteOptionsBaader.LOGIDENT + getLogMethod + "vor der Zwei-Faktor-Authentifizierung" });
+				
+				String tanArt = "tan";
+				String secText = "Bitte geben Sie Ihre TAN ein";
+				String userTanInput = null;
+				try {
+					userTanInput = (String)DialogAskTan.invoke(DialogAskTan, new Object[] { tanArt, secText, "institutlogo-baader.png" });
+				} catch (InvocationTargetException error) {
+					isSelfException = true;
+					if (!StringCharUtils.isNullOrEmptyOrNothing(error.getCause().toString()) && error
+							.getCause().toString().contains("OperationCanceledException"))
+						throw new Exception("Abbruch der " + tanArt + "-Eingabe durch Benutzer (OperationCanceledException)"); 
+					LogError.invoke(LogError, new Object[] { InstituteOptionsBaader.LOGIDENT + getLogMethod + "TANAuthDialog fehlerhaft:\n" + 
+							ExceptionUtils.getStackTrace(error) });
+					throw new Exception("TANAuthDialog fehlerhaft: " + error.getMessage());
+				} 
+				WebElement tanInput = seleniumWebDriver.findElement(By.cssSelector("input[name='tan']"));
+				LogDebug.invoke(LogDebug, new Object[] { InstituteOptionsBaader.LOGIDENT + getLogMethod + "tanInput: " + tanInput });
+				tanInput.click();
+				tanInput.sendKeys(new CharSequence[] { userTanInput });
+				try {
+					SeleniumUtils.clickElementHandleErrors(seleniumWebDriver, "submitContinue", "//input[@name='OK']", WebUtils.LOADER_CATCHSTRING, WebUtils.LOADER_EXCLUSIONS, WebUtils.LOADER_PATH, WebUtils.LOADER_TEXT, true, externalLogger);
+				} catch (Exception error) {
+					isSelfException = true;
+					throw new Exception("WebDriver-Fehler: " + ExceptionUtils.getStackTrace(error));
+				} 
+			} catch (TimeoutException|org.openqa.selenium.NoSuchElementException noChipTanManual) {
+				LogDebug.invoke(LogDebug, new Object[] { InstituteOptionsBaader.LOGIDENT + getLogMethod + "Zwei-Faktor-Authentifizierung mit TAN wird nicht angezeigt" });
+			}  
+			
 
 			/*
 			boolean isChipTan = false;
@@ -417,20 +451,20 @@ public class WebAuth {
 				return seleniumWebDriver;
 			} 
 			*/
-			try {
+			/*try {
 				seleniumWebDriver.findElement(By.xpath("//iframe[@id='depot']"));
-				LogDebug.invoke(LogDebug, new Object[] { InstituteOptionsDeka.LOGIDENT + getLogMethod + "Depot-Iframe wird angezeigt, Login erfolgreich" });
+				LogDebug.invoke(LogDebug, new Object[] { InstituteOptionsBaader.LOGIDENT + getLogMethod + "Depot-Iframe wird angezeigt, Login erfolgreich" });
 			} catch (TimeoutException|org.openqa.selenium.NoSuchElementException noBankingApp) {
-				LogTrace.invoke(LogTrace, new Object[] { InstituteOptionsDeka.LOGIDENT + getLogMethod + "... nach dem Login erscheint folgende Seite im XML-Format: \n" + seleniumWebDriver
+				LogTrace.invoke(LogTrace, new Object[] { InstituteOptionsBaader.LOGIDENT + getLogMethod + "... nach dem Login erscheint folgende Seite im XML-Format: \n" + seleniumWebDriver
 						.getPageSource() });
 				isSelfException = true;
 				throw new Exception("Seite nach Login nicht erkannt. Bitte informieren Sie im Forum den Entwickler");
-			} 
+			} */
 			return seleniumWebDriver;
 		} catch (Exception error) {
 			if (isSelfException == true)
 				throw new Exception(error.getMessage()); 
-			LogError.invoke(LogError, new Object[] { InstituteOptionsDeka.LOGIDENT + getLogMethod + "Fehlermeldung/Exception des Systems:\n" + 
+			LogError.invoke(LogError, new Object[] { InstituteOptionsBaader.LOGIDENT + getLogMethod + "Fehlermeldung/Exception des Systems:\n" + 
 					ExceptionUtils.getStackTrace(error) });
 			throw new Exception("Fehlermeldung des Systems: " + error.getMessage());
 		} 
@@ -445,17 +479,17 @@ public class WebAuth {
 		boolean isSelfException = false;
 		WebDriverWait wait = new WebDriverWait(seleniumWebDriver, 3L);
 		try {
-			LogInfo.invoke(LogInfo, new Object[] { InstituteOptionsDeka.LOGIDENT + getLogMethod + "Abmelden aufrufen (" + InstituteOptionsDeka.LOGOUT_URL + ")" });
+			LogInfo.invoke(LogInfo, new Object[] { InstituteOptionsBaader.LOGIDENT + getLogMethod + "Abmelden aufrufen (" + InstituteOptionsBaader.LOGOUT_URL + ")" });
 			try {
-				seleniumWebDriver.get(InstituteOptionsDeka.LOGOUT_URL);
+				seleniumWebDriver.get(InstituteOptionsBaader.LOGOUT_URL);
 				SeleniumUtils.waitForJSandJQueryToLoad(seleniumWebDriver);
 				Thread.sleep(1000L);
-				LogDebug.invoke(LogDebug, new Object[] { InstituteOptionsDeka.LOGIDENT + getLogMethod + "loginpage: current webdriver hash: " + seleniumWebDriver
+				LogDebug.invoke(LogDebug, new Object[] { InstituteOptionsBaader.LOGIDENT + getLogMethod + "loginpage: current webdriver hash: " + seleniumWebDriver
 						.getWindowHandle().hashCode() });
 			} catch (Exception error) {
 				throw new Exception("WebDriver-Fehler: " + ExceptionUtils.getStackTrace(error));
 			} 
-			LogDebug.invoke(LogDebug, new Object[] { InstituteOptionsDeka.LOGIDENT + getLogMethod + "postLogoutPage: " + seleniumWebDriver });
+			LogDebug.invoke(LogDebug, new Object[] { InstituteOptionsBaader.LOGIDENT + getLogMethod + "postLogoutPage: " + seleniumWebDriver });
 			String postLogoutPage = seleniumWebDriver.getPageSource();
 			try {
 				WebUtils.checkSeleniumResponseHasError(postLogoutPage, seleniumWebDriver, externalLogger, externalProgressMonitor, externalDialogInterface);
@@ -463,23 +497,23 @@ public class WebAuth {
 				isSelfException = true;
 				throw new Exception(error.getMessage());
 			} 
-			String successLogoutXpath = "//span[contains(.,'Depotzugang')]";
+			String successLogoutXpath = "//span[contains(.,'von unserem Portal abgemeldet')]";
 			try {
-				LogDebug.invoke(LogDebug, new Object[] { InstituteOptionsDeka.LOGIDENT + getLogMethod + "Gefundene Logout-Best" + wait
+				LogDebug.invoke(LogDebug, new Object[] { InstituteOptionsBaader.LOGIDENT + getLogMethod + "Gefundene Logout-Best" + wait
 						.until((Function)ExpectedConditions.presenceOfElementLocated(By.xpath(successLogoutXpath))) });
 				SeleniumUtils.waitForJSandJQueryToLoad(seleniumWebDriver);
 			} catch (TimeoutException|org.openqa.selenium.NoSuchElementException notFounderr) {
-				LogTrace.invoke(LogTrace, new Object[] { InstituteOptionsDeka.LOGIDENT + getLogMethod + "Seite nach Logout-Aufruf unbekannt; Code zur Analyse:\n" + postLogoutPage });
+				LogTrace.invoke(LogTrace, new Object[] { InstituteOptionsBaader.LOGIDENT + getLogMethod + "Seite nach Logout-Aufruf unbekannt; Code zur Analyse:\n" + postLogoutPage });
 				isSelfException = true;
 				throw new Exception("Seite nach Logout-Aufruf unbekannt; Bitte dem Entwickler im Forum melden!");
 			} catch (Exception error) {
 				throw new Exception("WebDriver-Fehler: " + ExceptionUtils.getStackTrace(error));
 			} 
-			LogInfo.invoke(LogInfo, new Object[] { InstituteOptionsDeka.LOGIDENT + getLogMethod + "Logout bei der '" + InstituteOptionsDeka.LONG_NAME + "' war erfolgreich" });
+			LogInfo.invoke(LogInfo, new Object[] { InstituteOptionsBaader.LOGIDENT + getLogMethod + "Logout bei der '" + InstituteOptionsBaader.LONG_NAME + "' war erfolgreich" });
 		} catch (Exception error) {
 			if (isSelfException == true)
 				throw new Exception(error.getMessage()); 
-			LogError.invoke(LogError, new Object[] { InstituteOptionsDeka.LOGIDENT + getLogMethod + "WebLogout fehlerhaft! Stacktrace:\n" + 
+			LogError.invoke(LogError, new Object[] { InstituteOptionsBaader.LOGIDENT + getLogMethod + "WebLogout fehlerhaft! Stacktrace:\n" + 
 					ExceptionUtils.getStackTrace(error) });
 			throw new Exception("WebLogout fehlerhaft! Fehlermeldung:" + error.getMessage());
 		} 

@@ -19,6 +19,9 @@ import de.willuhn.logging.Logger;
 import de.willuhn.util.ApplicationException;
 import de.willuhn.util.ProgressMonitor;
 import name.aiteanu.docmanager.Settings;
+import name.aiteanu.docmanager.institute.baaderbank.InstituteOptionsBaader;
+import name.aiteanu.docmanager.institute.baaderbank.WebSyncBaader;
+import name.aiteanu.docmanager.institute.deka.InstituteOptionsDeka;
 import name.aiteanu.docmanager.institute.deka.WebSyncDeka;
 import name.aiteanu.docmanager.institute.dkb.WebSyncDkb;
 import name.aiteanu.docmanager.rmi.Account;
@@ -59,14 +62,21 @@ public class SynchronizeDocuments implements BackgroundTask {
 				
 				try { // jedes Institut wird einzeln im try-catch abgefragt
 					switch (account.getInstitute()) {
-					case "DKB":
+					case InstituteOptionsBaader.SHORT_NAME:
 						monitor.setStatusText("Institute " + account.getInstitute());
-						WebSyncDkb sync = new WebSyncDkb();
-						sync.synchronizeDocuments(account, monitor);
+						WebSyncBaader syncBaader = new WebSyncBaader();
+						syncBaader.synchronizeDocuments(account, monitor);
 						account.setLastUpdateOn(new Date());
 						account.store();
 						break;
-					case "Deka":
+					case "DKB":
+						monitor.setStatusText("Institute " + account.getInstitute());
+						WebSyncDkb syncDkb = new WebSyncDkb();
+						syncDkb.synchronizeDocuments(account, monitor);
+						account.setLastUpdateOn(new Date());
+						account.store();
+						break;
+					case InstituteOptionsDeka.SHORT_NAME:
 						monitor.setStatusText("Institute " + account.getInstitute());
 						WebSyncDeka syncDeka = new WebSyncDeka();
 						syncDeka.synchronizeDocuments(account, monitor);

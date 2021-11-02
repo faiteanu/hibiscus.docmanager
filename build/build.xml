@@ -139,6 +139,10 @@
 	<target depends="jar" name="zip" description="generates the zip files">	
 		<antcall target="addlib"/>
 		<antcall target="addsql"/>
+		<mkdir dir="${project.zipdir}/img" />
+	    <copy todir="${project.zipdir}/img">
+	      <fileset dir="${img.dir}" />
+	    </copy>
 
 		<!--<mkdir dir="${project.zipdir}/updates" />
 	    <javac debug="true"
@@ -184,6 +188,7 @@
 				<include name="${lib.dir}/**" />
 				<include name="${sql.dir}/**" />
 				<include name="${src.dir}/**" />
+				<include name="${img.dir}/**" />
 				<include name="${webapps.dir}/**" />
 				<include name="${build.dir}/**" />
 				<exclude name="${build.dir}/BUILD" />
