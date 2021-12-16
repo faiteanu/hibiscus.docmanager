@@ -6,6 +6,7 @@ import java.net.URL;
 import java.rmi.RemoteException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -17,6 +18,8 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import com.google.common.base.Function;
 
 import ch.racic.selenium.helper.download.FileData;
 import ch.racic.selenium.helper.download.SeleniumDownloadHelper;
@@ -76,7 +79,7 @@ public class WebSyncBaader {
 			String appHttpsProxyHost = Application.getConfig().getHttpsProxyHost();
 			int appHttpsProxyPort = Application.getConfig().getHttpsProxyPort();
 			try {
-				boolean headless = false; // TODO before checkin
+				boolean headless = true; // TODO before checkin
 				String osname = System.getProperty("os.name");
 				String osarch = System.getProperty("os.arch");
 				if (osname.contains("Linux") && osarch.contains("386")) {
@@ -157,13 +160,13 @@ public class WebSyncBaader {
 		Method MonitorLog = externalProgressMonitor.getMethod("log", new Class[] { String.class });
 		String getLogMethod = "[downloadDocuments] ";
 		boolean isSelfException = false;
-		WebDriverWait wait1 = new WebDriverWait(seleniumWebDriver, 1L);
+		WebDriverWait wait1 = new WebDriverWait(seleniumWebDriver, Duration.ofSeconds(1));
 
 		SeleniumDownloadHelper downloader = new SeleniumDownloadHelper(seleniumWebDriver);
 
 		LogInfo.invoke(LogInfo, new Object[] { InstituteOptionsBaader.LOGIDENT + getLogMethod + "Gewählte Ordner durchgehen ..." });
 		try {
-			WebElement downloads = findElement(seleniumWebDriver, By.xpath("//div[@class='navigation']//a[.='Download']"));
+			WebElement downloads = findElement(seleniumWebDriver, By.xpath("//ul[contains(@class,'navbar-nav')]//a[contains(@href,'downloadobs')]"));
 			downloads.click();
 			LogInfo.invoke(LogInfo, new Object[] { InstituteOptionsBaader.LOGIDENT + getLogMethod + " Ordner: " + InstituteOptionsBaader.MAILBOX_URL });
 		} catch (Exception error) {
@@ -196,7 +199,8 @@ public class WebSyncBaader {
 			for (WebElement folder : folders) {
 				try {
 					WebElement folderName = findElement(folder, By.cssSelector(".fl"));
-					
+					//folderName.click();
+					//wait1.until((Function)ExpectedConditions.presenceOfElementLocated(By.cssSelector("aside input.js-username")))
 					List<WebElement> rows = folder.findElements(By.cssSelector("div.accordionContent tbody tr "));
 					
 					for(WebElement el : rows) {

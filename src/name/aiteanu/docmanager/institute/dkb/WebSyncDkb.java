@@ -6,6 +6,7 @@ import java.net.URL;
 import java.rmi.RemoteException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -187,7 +188,7 @@ public class WebSyncDkb {
 	    Method MonitorLog = externalProgressMonitor.getMethod("log", new Class[] { String.class });
 	    String getLogMethod = "[parseSubfolders] ";
 	    boolean isSelfException = false;
-	    WebDriverWait wait1 = new WebDriverWait(seleniumWebDriver, 1L);
+	    WebDriverWait wait1 = new WebDriverWait(seleniumWebDriver, Duration.ofSeconds(1));
 	       
 	    
 //	    LogInfo.invoke(LogInfo, new Object[] { LOGIDENT + getLogMethod + "Gewählte Ordner durchgehen ..." });
@@ -270,7 +271,7 @@ public class WebSyncDkb {
 		Method MonitorLog = externalProgressMonitor.getMethod("log", new Class[] { String.class });
 		String getLogMethod = "[downloadDocuments] ";
 		boolean isSelfException = false;
-		WebDriverWait wait1 = new WebDriverWait(seleniumWebDriver, 1L);
+		WebDriverWait wait1 = new WebDriverWait(seleniumWebDriver, Duration.ofSeconds(1));
 
 		SeleniumDownloadHelper downloader = new SeleniumDownloadHelper(seleniumWebDriver);
 
@@ -279,7 +280,7 @@ public class WebSyncDkb {
 		DateFormat df = new SimpleDateFormat("dd.MM.yyyy");		    	
 
 		WebElement created = findElement(elementFile, By.cssSelector(".abaxx-aspect-created"));
-		WebElement title = findElement(elementFile, By.cssSelector(".evt-getMailboxAttachment")); //abaxx-aspect-subject
+		WebElement title = findElement(elementFile, By.cssSelector(".evt-getMailboxAttachment"));
 		WebElement link = findElement(elementFile, By.cssSelector(".iconSpeichern0"));
 		Date createdOn = (created != null ? df.parse(created.getText()) : new Date());
 		String titleStr = title.getText();

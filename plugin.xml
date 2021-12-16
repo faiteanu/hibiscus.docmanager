@@ -3,7 +3,7 @@
 <plugin xmlns="http://www.willuhn.de/schema/jameica-plugin"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.willuhn.de/schema/jameica-plugin http://www.willuhn.de/schema/jameica-plugin-1.0.xsd"
-        name="hibiscus.docmanager" version="0.1.2" class="name.aiteanu.docmanager.DocManager">
+        name="hibiscus.docmanager" version="0.2.0" class="name.aiteanu.docmanager.DocManager">
 
   <description>DocManager Plugin for Jameica/Hibiscus</description>
   <url>https://faiteanu.github.io/hibiscus.docmanager/hibiscus.docmanager.zip</url>
@@ -17,7 +17,7 @@
     <import plugin="hibiscus.scripting.chromedriver" version="89.0.4389.23+" required="true" />
     <import plugin="hibiscus.scripting.htmlunit" version="2.45+" required="true" />
     <import plugin="hibiscus.scripting.selenium" version="3.141.59+" />
-    <import plugin="finance.websync" version="0.9.21+" required="true" />
+    <import plugin="finance.websync" version="0.9.29+" required="true" />
   </requires>
 
   <!-- Define regex wildcards for the classes and jars the classfinder should load -->

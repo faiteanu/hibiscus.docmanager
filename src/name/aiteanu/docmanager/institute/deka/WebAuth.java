@@ -3,6 +3,7 @@ package name.aiteanu.docmanager.institute.deka;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.time.Duration;
 import java.util.function.Function;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.openqa.selenium.By;
@@ -32,9 +33,9 @@ public class WebAuth {
 		Method DialogAskImageTan = externalDialogInterface.getMethod("askImageTAN", new Class[] { String.class, InputStream.class, String.class, String.class });
 		String getLogMethod = "[WebLogin] ";
 		boolean isSelfException = false;
-		WebDriverWait wait = new WebDriverWait(seleniumWebDriver, 30L);
-		WebDriverWait wait10 = new WebDriverWait(seleniumWebDriver, 10L);
-		WebDriverWait wait1 = new WebDriverWait(seleniumWebDriver, 1L);
+		WebDriverWait wait = new WebDriverWait(seleniumWebDriver, Duration.ofSeconds(30));
+		WebDriverWait wait10 = new WebDriverWait(seleniumWebDriver, Duration.ofSeconds(10));
+		WebDriverWait wait1 = new WebDriverWait(seleniumWebDriver, Duration.ofSeconds(1));
 		try {
 			LogInfo.invoke(LogInfo, new Object[] { InstituteOptionsDeka.LOGIDENT + getLogMethod + InstituteOptionsDeka.SHORT_NAME + "-Login aufrufen ... (GET " + InstituteOptionsDeka.LOGIN_URL + ")" });
 			try {
@@ -53,15 +54,17 @@ public class WebAuth {
 				isSelfException = true;
 				throw new Exception("Fehler auf der Login-Seite: " + error.getMessage());
 			} 
-			String cookieDetectPath = "//div[@class='mfp-content' and not(contains(@style,'display: none;'))]";
-			String cookieAcceptPath = "//button[contains(@class,'js-accept-selected-cookies')]";
+			String cookieDetectPath = "//div[@id='cmpbox' and not(contains(@style,'display: none;'))]";
+			String cookieAcceptPath = "//span[@id='cmpwelcomebtnno']";
 			SeleniumUtils.closeCookieLaw(seleniumWebDriver, InstituteOptionsDeka.LOGIDENT, InstituteOptionsDeka.LONG_NAME, InstituteOptionsDeka.LOGO_PATH, cookieDetectPath, cookieAcceptPath, WebUtils.LOADER_CATCHSTRING, WebUtils.LOADER_EXCLUSIONS, WebUtils.LOADER_PATH, WebUtils.LOADER_TEXT, externalLogger);
 			try {
+				wait.until((Function)ExpectedConditions.elementToBeClickable(By.id("login-toggle-desktop")));
+				seleniumWebDriver.findElement(By.id("login-toggle-desktop")).click();
 				//wait.until((Function)ExpectedConditions.presenceOfElementLocated(By.cssSelector("aside input.js-username")));
-				wait.until((Function)ExpectedConditions.elementToBeClickable(By.cssSelector("aside input.js-username")));
-				WebElement inputUsername = seleniumWebDriver.findElement(By.cssSelector("aside input.js-username"));
+				wait.until((Function)ExpectedConditions.elementToBeClickable(By.cssSelector(".meta-login__input--user")));
+				WebElement inputUsername = seleniumWebDriver.findElement(By.cssSelector(".meta-login__input--user"));
 				LogDebug.invoke(LogDebug, new Object[] { InstituteOptionsDeka.LOGIDENT + getLogMethod + "inputUsername: " + inputUsername });
-				WebElement inputPasswd = seleniumWebDriver.findElement(By.cssSelector("aside input.js-password"));
+				WebElement inputPasswd = seleniumWebDriver.findElement(By.cssSelector(".meta-login__input--password"));
 				LogDebug.invoke(LogDebug, new Object[] { InstituteOptionsDeka.LOGIDENT + getLogMethod + "inputPassword: " + inputPasswd });
 				inputUsername.click();
 				inputUsername.sendKeys(new CharSequence[] { responseLogin });
@@ -75,7 +78,7 @@ public class WebAuth {
 						ExceptionUtils.getStackTrace(error));
 			} 
 			try {
-				SeleniumUtils.clickElementHandleErrors(seleniumWebDriver, "submitContinue", "//aside//button[@title='Anmelden']", WebUtils.LOADER_CATCHSTRING, WebUtils.LOADER_EXCLUSIONS, WebUtils.LOADER_PATH, WebUtils.LOADER_TEXT, true, externalLogger);
+				SeleniumUtils.clickElementHandleErrors(seleniumWebDriver, "submitContinue", "//button[contains(@class,'meta-login__btn')]", WebUtils.LOADER_CATCHSTRING, WebUtils.LOADER_EXCLUSIONS, WebUtils.LOADER_PATH, WebUtils.LOADER_TEXT, true, externalLogger);
 			} catch (Exception error) {
 				isSelfException = true;
 				throw new Exception("WebDriver-Fehler: " + ExceptionUtils.getStackTrace(error));
@@ -418,8 +421,8 @@ public class WebAuth {
 			} 
 			*/
 			try {
-				seleniumWebDriver.findElement(By.xpath("//iframe[@id='depot']"));
-				LogDebug.invoke(LogDebug, new Object[] { InstituteOptionsDeka.LOGIDENT + getLogMethod + "Depot-Iframe wird angezeigt, Login erfolgreich" });
+				seleniumWebDriver.findElement(By.xpath("//button[@class='depot-zugang__button']"));
+				LogDebug.invoke(LogDebug, new Object[] { InstituteOptionsDeka.LOGIDENT + getLogMethod + "depot-zugang__button wird angezeigt, Login erfolgreich" });
 			} catch (TimeoutException|org.openqa.selenium.NoSuchElementException noBankingApp) {
 				LogTrace.invoke(LogTrace, new Object[] { InstituteOptionsDeka.LOGIDENT + getLogMethod + "... nach dem Login erscheint folgende Seite im XML-Format: \n" + seleniumWebDriver
 						.getPageSource() });
@@ -443,7 +446,7 @@ public class WebAuth {
 		Method LogTrace = externalLogger.getMethod("trace", new Class[] { String.class });
 		String getLogMethod = "[WebLogout] ";
 		boolean isSelfException = false;
-		WebDriverWait wait = new WebDriverWait(seleniumWebDriver, 3L);
+		WebDriverWait wait = new WebDriverWait(seleniumWebDriver, Duration.ofSeconds(3));
 		try {
 			LogInfo.invoke(LogInfo, new Object[] { InstituteOptionsDeka.LOGIDENT + getLogMethod + "Abmelden aufrufen (" + InstituteOptionsDeka.LOGOUT_URL + ")" });
 			try {
@@ -463,7 +466,7 @@ public class WebAuth {
 				isSelfException = true;
 				throw new Exception(error.getMessage());
 			} 
-			String successLogoutXpath = "//span[contains(.,'Depotzugang')]";
+			String successLogoutXpath = "//h2[contains(.,'Abmeldung erfolgreich')]";
 			try {
 				LogDebug.invoke(LogDebug, new Object[] { InstituteOptionsDeka.LOGIDENT + getLogMethod + "Gefundene Logout-Best" + wait
 						.until((Function)ExpectedConditions.presenceOfElementLocated(By.xpath(successLogoutXpath))) });

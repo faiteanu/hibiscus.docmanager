@@ -1,8 +1,12 @@
 package name.aiteanu.docmanager.institute.deka;
 
 import java.lang.reflect.Method;
+import java.net.URL;
+import java.util.Map;
 
 import org.openqa.selenium.WebDriver;
+
+import com.google.common.base.Splitter;
 
 import de.derrichter.finance.websync.utils.StringCharUtils;
 
@@ -70,4 +74,8 @@ public class WebUtils {
 
 	}
 
+	public static String parseUrlParameter(URL url, String param) {
+		final Map<String, String> map = Splitter.on('&').trimResults().withKeyValueSeparator('=').split(url.getQuery());
+        return map.getOrDefault(param, null);
+	}
 }

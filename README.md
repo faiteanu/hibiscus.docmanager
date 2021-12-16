@@ -9,8 +9,10 @@ Plugin zum Verwalten von Dokumenten in Jameica / Hibiscus
 * Abruf von Dokumenten von den Webseiten der unterstützen Institute.
 * Sortierung / Filterung der Dokumente
 * Einbindung in die Suche von Jameica (Über Strg+1 erreichbar)
+* Anzeige in der Termin-Ansicht von Jameica
 
 # Unterstützte Institute
+* Baader Bank
 * Deutsche Kreditbank (DKB)
 * DekaBank
 

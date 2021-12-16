@@ -6,6 +6,7 @@ import java.net.URL;
 import java.rmi.RemoteException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.Date;
 import java.util.List;
 
@@ -156,7 +157,7 @@ public class WebSyncDeka {
 		Method MonitorLog = externalProgressMonitor.getMethod("log", new Class[] { String.class });
 		String getLogMethod = "[downloadDocuments] ";
 		boolean isSelfException = false;
-		WebDriverWait wait1 = new WebDriverWait(seleniumWebDriver, 1L);
+		WebDriverWait wait1 = new WebDriverWait(seleniumWebDriver, Duration.ofSeconds(1));
 
 		SeleniumDownloadHelper downloader = new SeleniumDownloadHelper(seleniumWebDriver);
 
@@ -187,7 +188,7 @@ public class WebSyncDeka {
 			DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
 
 //		    	do{
-			WebElement mailboxFrame = findElement(seleniumWebDriver, By.xpath("//iframe[@id='depot']"));
+			WebElement mailboxFrame = findElement(seleniumWebDriver, By.xpath("//iframe[@title='Depotzugang']"));
 			seleniumWebDriver.switchTo().frame(mailboxFrame);
 			List<WebElement> elements = seleniumWebDriver
 					.findElements(By.xpath("//form[@name='MailboxDocs']//tbody/tr"));
@@ -208,18 +209,23 @@ public class WebSyncDeka {
 					existingDocs.addFilter("title = ?", titleStr);
 					if (!existingDocs.hasNext()) { // only add document which did not exist in the DB
 						try {
+							URL docUrl = new URL(url);
+							String remoteId = WebUtils.parseUrlParameter(docUrl, "documentId");
 							// create new document
 							Document doc =  (Document) Settings.getDBService().createObject(Document.class, null);
 							doc.setAccount(account);
 							doc.setRemoteFolder("Postfach");
+							doc.setRemoteID(remoteId);
 							doc.setTitle(titleStr);
 							doc.setCreatedOn(createdOn);
 
 							try { // download file and set metadata
-								FileData fd = downloader.getFileFromUrlRaw(new URL(url));
+								FileData fd = downloader.getFileFromUrlRaw(docUrl);
 								String fileName = fd.getGuessedFilename().replaceAll("[\\\\/:*?\"<>|]", "_");
 								if(fileName.contains("documentId")) {
 									fileName = fileName.substring(fileName.indexOf("documentId=") + 11) + ".pdf";
+								} else if (url.contains("documentId")) {
+									fileName = remoteId + "-" + fileName;
 								}
 								File output = new File(account.getDocumentsPath(), fileName);
 								doc.setLocalFolder(output.getParent());

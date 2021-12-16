@@ -9,16 +9,13 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import de.willuhn.datasource.rmi.DBIterator;
 import de.willuhn.jameica.hbci.messaging.ImportMessage;
-import de.willuhn.jameica.messaging.MessagingFactory;
 import de.willuhn.jameica.messaging.TextMessage;
 import de.willuhn.jameica.system.Application;
 import de.willuhn.jameica.system.BackgroundTask;
 import de.willuhn.logging.Logger;
 import de.willuhn.util.ApplicationException;
 import de.willuhn.util.ProgressMonitor;
-import name.aiteanu.docmanager.Settings;
 import name.aiteanu.docmanager.institute.baaderbank.InstituteOptionsBaader;
 import name.aiteanu.docmanager.institute.baaderbank.WebSyncBaader;
 import name.aiteanu.docmanager.institute.deka.InstituteOptionsDeka;

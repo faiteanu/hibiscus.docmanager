@@ -2,7 +2,6 @@
 package name.aiteanu.docmanager.gui.action;
 
 import java.rmi.RemoteException;
-import java.util.Date;
 
 import de.willuhn.jameica.gui.Action;
 import de.willuhn.jameica.hbci.HBCI;
