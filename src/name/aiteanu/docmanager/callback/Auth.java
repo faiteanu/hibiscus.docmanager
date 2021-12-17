@@ -148,7 +148,7 @@ public class Auth {
       monitor.log("Web-Login mit Selenium-WebDriver-Engine mit Anmeldekennung " + login_Benutzer.substring(0, 4) + "******* auf " + loginURL + " ...");
       String login_Passwort = getPasswort(login_Benutzer, monitor, institutAlias, logo, minPassLength, maxPassLength);
       do {
-        Class[] methodParameters = new Class[7];
+        Class<?>[] methodParameters = new Class[7];
         methodParameters[0] = String.class;
         methodParameters[1] = String.class;
         methodParameters[2] = WebDriver.class;

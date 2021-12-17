@@ -111,7 +111,7 @@ public class WebSyncBaader {
 					+ "' abgearbeitet ...");
 
 
-			downloadDocuments(account, seleniumWebDriver, WebLogger.class, WebProgressMonitor.class, WebDialogs.class);
+			downloadDocuments(account, seleniumWebDriver, WebLogger.class, monitor, WebDialogs.class);
 
 		} catch (Exception error) {
 			try {
@@ -152,12 +152,11 @@ public class WebSyncBaader {
 	}
 
 	public boolean downloadDocuments(Account account, WebDriver seleniumWebDriver, Class<?> externalLogger,
-			Class<?> externalProgressMonitor, Class<?> externalDialogInterface) throws Exception {
+			ProgressMonitor monitor, Class<?> externalDialogInterface) throws Exception {
 		Method LogInfo = externalLogger.getMethod("info", new Class[] { String.class });
 		Method LogWarn = externalLogger.getMethod("warn", new Class[] { String.class });
 		Method LogDebug = externalLogger.getMethod("debug", new Class[] { String.class });
 		Method LogTrace = externalLogger.getMethod("trace", new Class[] { String.class });
-		Method MonitorLog = externalProgressMonitor.getMethod("log", new Class[] { String.class });
 		String getLogMethod = "[downloadDocuments] ";
 		boolean isSelfException = false;
 		WebDriverWait wait1 = new WebDriverWait(seleniumWebDriver, Duration.ofSeconds(1));
@@ -176,7 +175,7 @@ public class WebSyncBaader {
 		String pageLoginAccounts = seleniumWebDriver.getPageSource();
 		try {
 			WebUtils.checkSeleniumResponseHasError(pageLoginAccounts, seleniumWebDriver, externalLogger,
-					externalProgressMonitor, externalDialogInterface);
+					WebProgressMonitor.class, externalDialogInterface);
 		} catch (Exception error) {
 			isSelfException = true;
 			throw new Exception("Fehler auf der Download-Seite: " + error.getMessage());
@@ -237,9 +236,9 @@ public class WebSyncBaader {
 									LogInfo.invoke(LogInfo, new Object[] { InstituteOptionsBaader.LOGIDENT + getLogMethod + " Storing : " + output.getAbsolutePath() });
 									FileUtils.writeByteArrayToFile(output, fd.getData());
 									output.setLastModified(doc.getCreatedOn().getTime());
-	
+									//monitor.log(InstituteOptionsBaader.LOGIDENT + getLogMethod + " Dokument geladen : " + doc.getTitle());
 								} catch (Exception ex) {
-									MonitorLog.invoke(MonitorLog, new Object[] { InstituteOptionsBaader.LOGIDENT + getLogMethod + " error while downloading file : " + ex.getMessage() });
+									monitor.log(InstituteOptionsBaader.LOGIDENT + getLogMethod + " error while downloading file : " + ex.getMessage() );
 									doc.setComment("Datei konnte nicht von der Baader-Webseite geladen werden. " + ex.getMessage());
 								}
 	
@@ -248,13 +247,11 @@ public class WebSyncBaader {
 								SynchronizeDocuments.notifyDocumentListeners(doc);
 																		
 							} catch (RemoteException e) {
-								MonitorLog.invoke(MonitorLog, new Object[] {
-										InstituteOptionsBaader.LOGIDENT + getLogMethod + " error while downloading file : " + e.getMessage() });
+								monitor.log(InstituteOptionsBaader.LOGIDENT + getLogMethod + " error while downloading file : " + e.getMessage());
 								// throw new ApplicationException(Settings.i18n().tr("error while downloading
 								// file"),e);
 							} catch (Exception e) {
-								MonitorLog.invoke(MonitorLog, new Object[] {
-										InstituteOptionsBaader.LOGIDENT + getLogMethod + " error while downloading file : " + e.getMessage() });
+								monitor.log(InstituteOptionsBaader.LOGIDENT + getLogMethod + " error while downloading file : " + e.getMessage());
 								// throw new ApplicationException(Settings.i18n().tr("error while downloading
 								// file"),e);
 							}

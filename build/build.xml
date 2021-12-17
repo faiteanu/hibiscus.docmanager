@@ -144,7 +144,7 @@
 	      <fileset dir="${img.dir}" />
 	    </copy>
 
-		<!--<mkdir dir="${project.zipdir}/updates" />
+		<mkdir dir="${project.zipdir}/updates" />
 	    <javac debug="true"
 	           includeantruntime="false"
 	           debuglevel="lines,vars,source"
@@ -160,7 +160,7 @@
 	      <fileset dir="${update.dir}">
 	        <exclude name="*.java" />
 	      </fileset>
-	    </copy>-->
+	    </copy>
 		
 		<copy file="plugin.xml" todir="${project.zipdir}" />
 		<copy file="COPYING" todir="${project.zipdir}" />

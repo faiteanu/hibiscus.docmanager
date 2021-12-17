@@ -338,7 +338,7 @@ public class WebSyncDkb {
 			}
 		}else {
 			LogInfo.invoke(LogInfo, new Object[] {
-					LOGIDENT + getLogMethod + " Document already downloaded : " + createdOn + " " +  titleStr});
+					LOGIDENT + getLogMethod + " Document already downloaded : " + df.format(createdOn) + " " +  titleStr});
 		}
 
 		return null;

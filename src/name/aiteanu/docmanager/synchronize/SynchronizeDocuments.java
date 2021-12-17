@@ -16,6 +16,8 @@ import de.willuhn.jameica.system.BackgroundTask;
 import de.willuhn.logging.Logger;
 import de.willuhn.util.ApplicationException;
 import de.willuhn.util.ProgressMonitor;
+import name.aiteanu.docmanager.Settings;
+import name.aiteanu.docmanager.callback.WebProgressMonitor;
 import name.aiteanu.docmanager.institute.baaderbank.InstituteOptionsBaader;
 import name.aiteanu.docmanager.institute.baaderbank.WebSyncBaader;
 import name.aiteanu.docmanager.institute.deka.InstituteOptionsDeka;
@@ -44,6 +46,7 @@ public class SynchronizeDocuments implements BackgroundTask {
 		boolean syncHasErrors = false;
 
 		try {
+			WebProgressMonitor.setInstance(monitor); // Um Mashup einen Monitor unterzuschieben. 
 			int currentIndex = 1;
 			//DBIterator<Account> accounts = Settings.getDBService().createList(Account.class);
 			//while (accounts.hasNext()) {
@@ -130,6 +133,7 @@ public class SynchronizeDocuments implements BackgroundTask {
 			Application.getMessagingFactory().sendMessage(new ImportMessage(doc));
 			Application.getMessagingFactory().getMessagingQueue("hibiscus.ibankstatement")
 					.sendMessage(new TextMessage(doc.getLocalFolder() + File.separator + doc.getFilename()));
+			WebProgressMonitor.log(Settings.i18n().tr("Dokument geladen: {0} / {1}", doc.getRemoteFolder(), doc.getTitle()));
 		}
 		catch (Exception ex)
 		{

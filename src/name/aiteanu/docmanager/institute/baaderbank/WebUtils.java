@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import org.openqa.selenium.WebDriver;
 
 import de.derrichter.finance.websync.utils.StringCharUtils;
+import de.willuhn.util.ProgressMonitor;
 
 public class WebUtils {
 	static String LOADER_CATCHSTRING = "DummyCatchString";
@@ -16,7 +17,7 @@ public class WebUtils {
 	static String LOADER_TEXT = "DummyLoaderText";
 
 	public static void checkSeleniumResponseHasError(String responsePageAsString, WebDriver seleniumWebDriver,
-			Class<?> externalLogger, Class<?> externalProgressMonitor, Class<?> externalDialogInterface) throws Exception {
+			Class<?> externalLogger, Class<?> externalProgressmonitor, Class<?> externalDialogInterface) throws Exception {
 		Method DialogError = externalDialogInterface.getMethod("error", new Class[] { String.class, String.class });
 	    String logIdent = InstituteOptionsBaader.LOGIDENT;
 	    String longName = InstituteOptionsBaader.LONG_NAME;
@@ -39,7 +40,7 @@ public class WebUtils {
 //	      errorMessage = StringCharUtils.shrinkString(errorMessage);
 //	      throw new Exception(errorMessage);
 //	    } 
-	    if (responsePageAsString.contains("Die Webseite ist derzeit nicht erreichbar")) {
+	    if (responsePageAsString.contains("Die Webseite ist derzeit nicht erreichbar") || responsePageAsString.contains("Website currently unavailable")) {
 	      errorMessage = "Geplante Wartungsarbeiten\n\nManchmal muss man auch in der digitalen Welt manuell Hand anlegen.\n\nDie Webseite steht aufgrund von Wartungsarbeiten aktuell nicht zur Verfügung.";
 	      DialogError.invoke(DialogError, new Object[] { "Fehlermeldung der " + InstituteOptionsBaader.SHORT_NAME + ":\n\n\n" + errorMessage, InstituteOptionsBaader.LOGO_PATH });
 	      errorMessage = StringCharUtils.shrinkString(errorMessage);

@@ -74,7 +74,7 @@ public class AccountImpl extends AbstractHibiscusDBObject implements Account {
 	}
 
 	@Override
-	protected Class getForeignObject(String field) throws RemoteException {
+	protected Class<?> getForeignObject(String field) throws RemoteException {
 		// the system is able to resolve foreign keys and loads
 		// the according objects automatically. You only have to
 		// define which class handles which foreign key.

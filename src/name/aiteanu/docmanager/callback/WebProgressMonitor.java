@@ -5,9 +5,9 @@ package name.aiteanu.docmanager.callback;
 
 //import de.derrichter.hibiscus.mashup.crossover.websync.WebSynchronizeBackend;
 //import de.willuhn.jameica.hbci.synchronize.SynchronizeSession;
-import de.willuhn.jameica.services.BeanService;
-import de.willuhn.jameica.system.Application;
-import de.willuhn.logging.Logger;
+//import de.willuhn.jameica.services.BeanService;
+//import de.willuhn.jameica.system.Application;
+//import de.willuhn.logging.Logger;
 import de.willuhn.util.ProgressMonitor;
 
 /**
@@ -16,7 +16,16 @@ import de.willuhn.util.ProgressMonitor;
  *
  */
 public class WebProgressMonitor {
-  public static void log(String message) {
+	private static ProgressMonitor instance;
+
+	public static void setInstance(ProgressMonitor monitor) {
+		instance = monitor;
+	}
+
+	public static void log(String message) {
+		if (instance != null) {
+			instance.log(message);
+		}
 //    BeanService service = (BeanService)Application.getBootLoader().getBootable(BeanService.class);
 //    Logger.trace("MonitorLog-Invoke eingegangen - BeanService: " + service.toString());
 //    SynchronizeSession session = ((WebSynchronizeBackend)service.get(WebSynchronizeBackend.class)).getCurrentSession();
@@ -27,9 +36,12 @@ public class WebProgressMonitor {
 //    } else {
 //      Logger.warn("SynchronizeSession ist null; daher kann keine MonitorLog ausgegeben werden");
 //    } 
-  }
-  
-  public static void setPercentComplete(int prozent) {
+	}
+
+	public static void setPercentComplete(int percent) {
+		if (instance != null) {
+			instance.setPercentComplete(percent);
+		}
 //    BeanService service = (BeanService)Application.getBootLoader().getBootable(BeanService.class);
 //    SynchronizeSession session = ((WebSynchronizeBackend)service.get(WebSynchronizeBackend.class)).getCurrentSession();
 //    if (session != null) {
@@ -39,5 +51,5 @@ public class WebProgressMonitor {
 //    } else {
 //      Logger.warn("SynchronizeSession ist null; daher kann kein Monitor-Fortschritt ausgegeben werden");
 //    } 
-  }
+	}
 }

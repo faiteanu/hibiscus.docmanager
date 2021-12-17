@@ -17,7 +17,7 @@ import name.aiteanu.docmanager.Settings;
 /**
  * Our "About..." dialog.
  */
-public class About extends AbstractDialog
+public class About extends AbstractDialog<Object>
 {
 
 	/**

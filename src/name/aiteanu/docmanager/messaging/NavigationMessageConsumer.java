@@ -24,7 +24,7 @@ public class NavigationMessageConsumer implements MessageConsumer {
 	private DelayedListener listener = new DelayedListener(1000, new Worker());
 	
 	@Override
-	public Class[] getExpectedMessageTypes() {
+	public Class<?>[] getExpectedMessageTypes() {
 		return new Class[] { ObjectChangedMessage.class, SystemMessage.class };
 	}
 

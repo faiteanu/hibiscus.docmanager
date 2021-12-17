@@ -91,7 +91,7 @@ public class WebAuth {
 			
 			// Überprüfe, ob TAN-Eingabe nötig ist
 			try {
-				seleniumWebDriver.findElement(By.xpath("//h1[contains(., 'TAN-Eingabe erforderlich)]"));
+				seleniumWebDriver.findElement(By.xpath("//h1[contains(., 'TAN-Eingabe erforderlich')]"));
 				LogDebug.invoke(LogDebug, new Object[] { InstituteOptionsBaader.LOGIDENT + getLogMethod + "vor der Zwei-Faktor-Authentifizierung" });
 				
 				String tanArt = "tan";
@@ -113,11 +113,15 @@ public class WebAuth {
 				tanInput.click();
 				tanInput.sendKeys(new CharSequence[] { userTanInput });
 				try {
-					SeleniumUtils.clickElementHandleErrors(seleniumWebDriver, "submitContinue", "//input[@name='OK']", WebUtils.LOADER_CATCHSTRING, WebUtils.LOADER_EXCLUSIONS, WebUtils.LOADER_PATH, WebUtils.LOADER_TEXT, true, externalLogger);
+					SeleniumUtils.clickElementHandleErrors(seleniumWebDriver, "submitContinue", "//button[@name='OK']", WebUtils.LOADER_CATCHSTRING, WebUtils.LOADER_EXCLUSIONS, WebUtils.LOADER_PATH, WebUtils.LOADER_TEXT, true, externalLogger);
 				} catch (Exception error) {
 					isSelfException = true;
 					throw new Exception("WebDriver-Fehler: " + ExceptionUtils.getStackTrace(error));
 				} 
+				
+				wait.until((Function)ExpectedConditions.elementToBeClickable(By.cssSelector("a[contains(.,'fortfahren')]")));
+				WebElement continueButton = seleniumWebDriver.findElement(By.cssSelector("a[contains(.,'fortfahren')]"));
+				continueButton.click();
 			} catch (TimeoutException|org.openqa.selenium.NoSuchElementException noChipTanManual) {
 				LogDebug.invoke(LogDebug, new Object[] { InstituteOptionsBaader.LOGIDENT + getLogMethod + "Zwei-Faktor-Authentifizierung mit TAN wird nicht angezeigt" });
 			}  

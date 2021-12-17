@@ -363,7 +363,7 @@ public class DocumentListController extends AbstractControl
 	{
 
 		@Override
-		public Class[] getExpectedMessageTypes()
+		public Class<?>[] getExpectedMessageTypes()
 		{
 			return new Class[]{
 					ObjectChangedMessage.class

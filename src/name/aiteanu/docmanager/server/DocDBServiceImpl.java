@@ -54,7 +54,7 @@ public class DocDBServiceImpl extends HBCIDBServiceImpl
     Logger.info("loading database driver: " + driverClass);
     try
     {
-      Class c = cl.load(driverClass);
+    	Class<?> c = cl.load(driverClass);
       this.driver = (DBSupport) service.get(c);
     }
     catch (Throwable t)
