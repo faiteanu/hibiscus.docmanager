@@ -23,7 +23,7 @@ public class AccountSearchProvider implements SearchProvider
 	@Override
 	public String getName()
 	{
-		return Settings.i18n().tr("Accounts");
+		return "DocManager: " + Settings.i18n().tr("Accounts");
 	}
 
 	@Override

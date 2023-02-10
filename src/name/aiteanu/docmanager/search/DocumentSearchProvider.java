@@ -24,7 +24,7 @@ public class DocumentSearchProvider implements SearchProvider
 	@Override
 	public String getName()
 	{
-		return Settings.i18n().tr("Documents");
+		return "DocManager: " + Settings.i18n().tr("Documents");
 	}
 
 	@Override

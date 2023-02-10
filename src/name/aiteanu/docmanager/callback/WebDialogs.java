@@ -1,6 +1,6 @@
 package name.aiteanu.docmanager.callback;
 
-import de.derrichter.hibiscus.mashup.gui.dialogs.AuthDialog;
+import de.derrichter.hibiscus.mashup.gui.dialogs.security.AuthDialog;
 import de.willuhn.jameica.gui.util.SWTUtil;
 import de.willuhn.logging.Logger;
 
