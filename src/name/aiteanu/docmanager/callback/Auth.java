@@ -1,7 +1,7 @@
 package name.aiteanu.docmanager.callback;
 
-import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import org.htmlunit.WebClient;
+import org.htmlunit.html.HtmlPage;
 import de.derrichter.finance.websync.utils.StringCharUtils;
 import de.derrichter.hibiscus.mashup.crossover.callback.WebDialogs;
 import de.derrichter.hibiscus.mashup.crossover.callback.WebLogger;
