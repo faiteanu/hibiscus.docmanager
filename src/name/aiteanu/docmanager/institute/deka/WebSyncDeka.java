@@ -85,7 +85,7 @@ public class WebSyncDeka {
 							WebProgressMonitor.class, appSysProxyUse, appProxyHost, appProxyPort, appHttpsProxyHost,
 							appHttpsProxyPort, false, "", "", headless);
 				} else {
-					SyncPropertiesHelper.setChromeDriverPaths();
+					SyncPropertiesHelper.setChromeDriverAndBrowserPaths();
 					seleniumWebDriver = ChromeDriverWebClientInit.connConfig(false, true, true, WebLogger.class,
 							WebProgressMonitor.class, appSysProxyUse, appProxyHost, appProxyPort, appHttpsProxyHost,
 							appHttpsProxyPort, false, "", "", headless);
