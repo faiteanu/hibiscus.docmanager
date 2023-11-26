@@ -86,12 +86,12 @@ public class WebSyncBaader {
 					SyncPropertiesHelper.setGeckoDriverPaths(); // changed
 					seleniumWebDriver = GeckoDriverWebClientInit.connConfig(false, true, false, WebLogger.class,
 							WebProgressMonitor.class, appSysProxyUse, appProxyHost, appProxyPort, appHttpsProxyHost,
-							appHttpsProxyPort, false, "", "", headless);
+							appHttpsProxyPort, false, "", "", headless, "", "");
 				} else {
 					SyncPropertiesHelper.setChromeDriverAndBrowserPaths();
 					seleniumWebDriver = ChromeDriverWebClientInit.connConfig(false, true, true, WebLogger.class,
 							WebProgressMonitor.class, appSysProxyUse, appProxyHost, appProxyPort, appHttpsProxyHost,
-							appHttpsProxyPort, false, "", "", headless);
+							appHttpsProxyPort, false, "", "", headless, "", "");
 				}
 			} catch (Exception webClientError) {
 				isSelfException = true;

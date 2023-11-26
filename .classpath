@@ -17,8 +17,8 @@
 	<classpathentry kind="lib" path="/hibiscus.scripting.selenium/lib/selenium-support-4.0.0.jar" sourcepath="C:/Users/aitea/AppData/Local/Temp/.org.sf.feeling.decompiler1639694130659/source/selenium-support-4.0.0-rc-2-sources.jar"/>
 	<classpathentry kind="lib" path="/hibiscus.scripting.selenium/lib/lib/guava-31.0.1-jre.jar"/>
 	<classpathentry kind="lib" path="lib/SeleniumDownloadHelper-0.4.1-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="/hibiscus.scripting.htmlunit/lib/commons-io/commons-io-2.10.0.jar"/>
-	<classpathentry kind="lib" path="/hibiscus.scripting.htmlunit/lib/org.apache.commons/commons-lang3-3.12.0.jar"/>
-	<classpathentry kind="lib" path="/hibiscus.scripting.htmlunit/lib/org.htmlunit/htmlunit-3.2.0.jar"/>
+	<classpathentry kind="lib" path="/hibiscus.scripting.htmlunit/lib/commons-io/commons-io-2.15.0.jar"/>
+	<classpathentry kind="lib" path="/hibiscus.scripting.htmlunit/lib/org.apache.commons/commons-lang3-3.13.0.jar"/>
+	<classpathentry kind="lib" path="/hibiscus.scripting.htmlunit/lib/org.htmlunit/htmlunit-3.7.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
