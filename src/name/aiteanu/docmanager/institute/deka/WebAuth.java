@@ -466,7 +466,7 @@ public class WebAuth {
 				isSelfException = true;
 				throw new Exception(error.getMessage());
 			} 
-			String successLogoutXpath = "//h2[contains(.,'Abmeldung erfolgreich')]";
+			String successLogoutXpath = "//h3[contains(.,'Abmeldung erfolgreich')]";
 			try {
 				LogDebug.invoke(LogDebug, new Object[] { InstituteOptionsDeka.LOGIDENT + getLogMethod + "Gefundene Logout-Best" + wait
 						.until((Function)ExpectedConditions.presenceOfElementLocated(By.xpath(successLogoutXpath))) });
