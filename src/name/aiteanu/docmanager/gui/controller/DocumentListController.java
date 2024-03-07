@@ -251,7 +251,7 @@ public class DocumentListController extends AbstractControl
 		if (this.range != null)
 			return this.range;
 
-		this.range = new RangeInput(this.getFrom(),this.getTo(),Range.CATEGORY_AUSWERTUNG,"documents.filter.range");
+		this.range = new RangeInput(this.getFrom(),this.getTo(), Range.Category.AUSWERTUNG,"documents.filter.range");
 		this.range.addListener(new Listener()
 		{
 			public void handleEvent(Event event)

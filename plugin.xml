@@ -3,7 +3,7 @@
 <plugin xmlns="http://www.willuhn.de/schema/jameica-plugin"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.willuhn.de/schema/jameica-plugin http://www.willuhn.de/schema/jameica-plugin-1.0.xsd"
-        name="hibiscus.docmanager" version="0.2.5" class="name.aiteanu.docmanager.DocManager">
+        name="hibiscus.docmanager" version="0.2.6" class="name.aiteanu.docmanager.DocManager">
 
   <description>DocManager Plugin for Jameica/Hibiscus</description>
   <url>https://faiteanu.github.io/hibiscus.docmanager/hibiscus.docmanager.zip</url>
@@ -12,7 +12,7 @@
 
   <!-- Define dependencies to jameica or other plugins -->
   <requires jameica="1.10+">
-    <import plugin="hibiscus" version="2.10+" required="true" />
+    <import plugin="hibiscus" version="2.10.17+" required="true" />
     <import plugin="hibiscus.mashup" version="0.9.40+" required="true" />
     <import plugin="hibiscus.scripting.chromedriver" version="117.0.5938.88+" required="true" />
     <import plugin="hibiscus.scripting.htmlunit" version="3.7.0+" required="true" />
