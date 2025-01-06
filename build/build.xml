@@ -64,7 +64,7 @@
 
 		<javac debug="true" debuglevel="lines,vars,source" deprecation="true"
 		       source="${define.java.version}" target="${define.java.version}"
-		       encoding="${define.encoding}"
+		       encoding="${define.encoding}" includeantruntime="false"
 		       srcdir="${src.dir}"
 		       destdir="${class.dir}">
 			<classpath refid="compilepath" />
