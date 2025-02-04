@@ -54,9 +54,8 @@ public class WebAuth {
 				isSelfException = true;
 				throw new Exception("Fehler auf der Login-Seite: " + error.getMessage());
 			} 
-			String cookieDetectPath = "//div[@id='cmpbox' and not(contains(@style,'display: none;'))]";
-			String cookieAcceptPath = "//span[@id='cmpwelcomebtnno']";
-			SeleniumUtils.closeCookieLaw(seleniumWebDriver, InstituteOptionsDeka.LOGIDENT, InstituteOptionsDeka.LONG_NAME, InstituteOptionsDeka.LOGO_PATH, cookieDetectPath, cookieAcceptPath, WebUtils.LOADER_CATCHSTRING, WebUtils.LOADER_EXCLUSIONS, WebUtils.LOADER_PATH, WebUtils.LOADER_TEXT, externalLogger);
+
+			SeleniumUtils.closeCookieLaw(seleniumWebDriver, InstituteOptionsDeka.LOGIDENT, InstituteOptionsDeka.LONG_NAME, InstituteOptionsDeka.LOGO_PATH, WebUtils.COOKIE_DETECT_PATH, WebUtils.COOKIE_ACCEPT_PATH, WebUtils.LOADER_CATCHSTRING, WebUtils.LOADER_EXCLUSIONS, WebUtils.LOADER_PATH, WebUtils.LOADER_TEXT, externalLogger);
 			try {
 				wait.until((Function)ExpectedConditions.elementToBeClickable(By.id("login-toggle-desktop")));
 				seleniumWebDriver.findElement(By.id("login-toggle-desktop")).click();

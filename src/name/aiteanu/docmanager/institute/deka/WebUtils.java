@@ -11,6 +11,10 @@ import com.google.common.base.Splitter;
 import de.derrichter.finance.websync.utils.StringCharUtils;
 
 public class WebUtils {
+	static String COOKIE_DETECT_PATH = "#cmpwrapper,#cmpbox";
+
+	static String COOKIE_ACCEPT_PATH = "a.cmpboxbtnno";
+	
 	static String LOADER_CATCHSTRING = "DummyCatchString";
 
 	static String LOADER_EXCLUSIONS = "DummyExclutionCatchString";
