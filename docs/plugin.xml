@@ -3,7 +3,7 @@
 <plugin xmlns="http://www.willuhn.de/schema/jameica-plugin"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.willuhn.de/schema/jameica-plugin http://www.willuhn.de/schema/jameica-plugin-1.0.xsd"
-        name="hibiscus.docmanager" version="0.2.8" class="name.aiteanu.docmanager.DocManager">
+        name="hibiscus.docmanager" version="0.2.9" class="name.aiteanu.docmanager.DocManager">
 
   <description>DocManager Plugin for Jameica/Hibiscus</description>
   <url>https://faiteanu.github.io/hibiscus.docmanager/hibiscus.docmanager.zip</url>
