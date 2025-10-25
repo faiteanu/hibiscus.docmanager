@@ -59,10 +59,10 @@ public class WebAuth {
 //			SeleniumUtils.closeCookieLaw(seleniumWebDriver, InstituteOptionsBaader.LOGIDENT, InstituteOptionsBaader.LONG_NAME, InstituteOptionsBaader.LOGO_PATH, cookieDetectPath, cookieAcceptPath, WebUtils.LOADER_CATCHSTRING, WebUtils.LOADER_EXCLUSIONS, WebUtils.LOADER_PATH, WebUtils.LOADER_TEXT, externalLogger);
 			try {
 				//wait.until((Function)ExpectedConditions.presenceOfElementLocated(By.cssSelector("aside input.js-username")));
-				wait.until((Function)ExpectedConditions.elementToBeClickable(By.cssSelector("input[name='authusername']")));
-				WebElement inputUsername = seleniumWebDriver.findElement(By.cssSelector("input[name='authusername']"));
+				wait.until((Function)ExpectedConditions.elementToBeClickable(By.id("user")));
+				WebElement inputUsername = seleniumWebDriver.findElement(By.id("user"));
 				LogDebug.invoke(LogDebug, new Object[] { InstituteOptionsBaader.LOGIDENT + getLogMethod + "inputUsername: " + inputUsername });
-				WebElement inputPasswd = seleniumWebDriver.findElement(By.cssSelector("input[name='authpassword']"));
+				WebElement inputPasswd = seleniumWebDriver.findElement(By.id("password"));
 				LogDebug.invoke(LogDebug, new Object[] { InstituteOptionsBaader.LOGIDENT + getLogMethod + "inputPassword: " + inputPasswd });
 				inputUsername.click();
 				inputUsername.sendKeys(new CharSequence[] { responseLogin });
@@ -91,7 +91,7 @@ public class WebAuth {
 			
 			// Überprüfe, ob TAN-Eingabe nötig ist
 			try {
-				seleniumWebDriver.findElement(By.xpath("//h1[contains(., 'TAN-Eingabe erforderlich')]"));
+				seleniumWebDriver.findElement(By.xpath("//h1[contains(., '2-Faktor-Authentifizierung erforderlich.')]"));
 				LogDebug.invoke(LogDebug, new Object[] { InstituteOptionsBaader.LOGIDENT + getLogMethod + "vor der Zwei-Faktor-Authentifizierung" });
 				
 				String tanArt = "tan";
@@ -113,15 +113,15 @@ public class WebAuth {
 				tanInput.click();
 				tanInput.sendKeys(new CharSequence[] { userTanInput });
 				try {
-					SeleniumUtils.clickElementHandleErrors(seleniumWebDriver, "submitContinue", "//button[@name='OK']", WebUtils.LOADER_CATCHSTRING, WebUtils.LOADER_EXCLUSIONS, WebUtils.LOADER_PATH, WebUtils.LOADER_TEXT, true, externalLogger);
+					SeleniumUtils.clickElementHandleErrors(seleniumWebDriver, "submitContinue", "//button[@id='button2facheck']", WebUtils.LOADER_CATCHSTRING, WebUtils.LOADER_EXCLUSIONS, WebUtils.LOADER_PATH, WebUtils.LOADER_TEXT, true, externalLogger);
 				} catch (Exception error) {
 					isSelfException = true;
 					throw new Exception("WebDriver-Fehler: " + ExceptionUtils.getStackTrace(error));
 				} 
 				
-				wait.until((Function)ExpectedConditions.elementToBeClickable(By.cssSelector("a[contains(.,'fortfahren')]")));
-				WebElement continueButton = seleniumWebDriver.findElement(By.cssSelector("a[contains(.,'fortfahren')]"));
-				continueButton.click();
+				//wait.until((Function)ExpectedConditions.elementToBeClickable(By.cssSelector("a[contains(.,'fortfahren')]")));
+				//WebElement continueButton = seleniumWebDriver.findElement(By.cssSelector("a[contains(.,'fortfahren')]"));
+				//continueButton.click();
 			} catch (TimeoutException|org.openqa.selenium.NoSuchElementException noChipTanManual) {
 				LogDebug.invoke(LogDebug, new Object[] { InstituteOptionsBaader.LOGIDENT + getLogMethod + "Zwei-Faktor-Authentifizierung mit TAN wird nicht angezeigt" });
 			}  

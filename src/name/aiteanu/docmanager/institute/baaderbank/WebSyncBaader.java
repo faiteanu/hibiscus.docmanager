@@ -165,8 +165,9 @@ public class WebSyncBaader {
 
 		LogInfo.invoke(LogInfo, new Object[] { InstituteOptionsBaader.LOGIDENT + getLogMethod + "Gewählte Ordner durchgehen ..." });
 		try {
-			WebElement downloads = findElement(seleniumWebDriver, By.xpath("//ul[contains(@class,'navbar-nav')]//a[contains(@href,'downloadobs')]"));
-			downloads.click();
+			//WebElement downloads = findElement(seleniumWebDriver, By.xpath("//ul[contains(@class,'navbar-nav')]//a[contains(@href,'downloadobs')]"));
+			//downloads.click();
+			seleniumWebDriver.get(InstituteOptionsBaader.MAILBOX_URL);
 			LogInfo.invoke(LogInfo, new Object[] { InstituteOptionsBaader.LOGIDENT + getLogMethod + " Ordner: " + InstituteOptionsBaader.MAILBOX_URL });
 		} catch (Exception error) {
 			isSelfException = true;
@@ -192,24 +193,24 @@ public class WebSyncBaader {
 				existingIds.add(doc.getRemoteID());
 			}
 
-			List<WebElement> folders = seleniumWebDriver.findElements(By.cssSelector("div.accordion"));
-			LogTrace.invoke(LogTrace, new Object[] { InstituteOptionsBaader.LOGIDENT + getLogMethod + " Folders: " + folders.size() });
+			//List<WebElement> folders = seleniumWebDriver.findElements(By.cssSelector("tr.mailtr"));
+			//LogTrace.invoke(LogTrace, new Object[] { InstituteOptionsBaader.LOGIDENT + getLogMethod + " Folders: " + folders.size() });
 
-			for (WebElement folder : folders) {
+			//for (WebElement folder : folders) {
 				try {
-					WebElement folderName = findElement(folder, By.cssSelector(".fl"));
+					//WebElement folderName = findElement(folder, By.cssSelector(".fl"));
 					//folderName.click();
 					//wait1.until((Function)ExpectedConditions.presenceOfElementLocated(By.cssSelector("aside input.js-username")))
-					List<WebElement> rows = folder.findElements(By.cssSelector("div.accordionContent tbody tr "));
+					List<WebElement> rows = seleniumWebDriver.findElements(By.cssSelector("tr.mailtr"));
 					
 					for(WebElement el : rows) {
-						WebElement link = findElement(el, By.cssSelector(":nth-child(5) a"));
+						WebElement link = findElement(el, By.cssSelector("div a"));
 						String url = link.getAttribute("href");
-						String remoteId = getQueryParam(url, "bfId");
+						String remoteId = url.substring(url.lastIndexOf('/') + 1);
 						if (!existingIds.contains(remoteId)) { // only add document which did not exist in the DB
-							WebElement created = findElement(el, By.cssSelector(":nth-child(1)"));
-							WebElement title = findElement(el, By.cssSelector(":nth-child(4)"));
-							String titleStr = title.getAttribute("innerHTML");
+							WebElement created = findElement(el, By.cssSelector("td.mailtd1"));
+							//WebElement title = findElement(el, By.cssSelector(":nth-child(4)"));
+							String titleStr = link.getAttribute("innerHTML");
 		
 	//						DBIterator<Document> existingDocs = Settings.getDBService().createList(Document.class);
 	//						existingDocs.addFilter("accountid = ?", account.getID());
@@ -220,7 +221,8 @@ public class WebSyncBaader {
 								// create new document
 								Document doc =  (Document) Settings.getDBService().createObject(Document.class, null);
 								doc.setAccount(account);
-								doc.setRemoteFolder(folderName.getText());
+								//doc.setRemoteFolder(folderName.getText());
+								doc.setRemoteFolder("Alle");
 								doc.setRemoteID(remoteId);
 								doc.setTitle(titleStr);
 								doc.setCreatedOn(createdOn);
@@ -228,7 +230,7 @@ public class WebSyncBaader {
 								try { // download file and set metadata
 									FileData fd = downloader.getFileFromUrlRaw(new URL(url));
 									String fileName = fd.getGuessedFilename().replaceAll("[\\\\/:*?\"<>|]", "_");
-									File output = new File(account.getDocumentsPath() + File.separator + folderName.getText() + File.separator + fileName);
+									File output = new File(account.getDocumentsPath() + File.separator + "Alle" + File.separator + fileName);
 									doc.setLocalFolder(output.getParent());
 									doc.setFilename(fileName);
 									doc.setDownloadedOn(new Date());
@@ -264,7 +266,7 @@ public class WebSyncBaader {
 					}
 				} catch (NoSuchElementException nse) {
 				}
-			}
+			//}
 
 
 		} catch (Exception error) {
